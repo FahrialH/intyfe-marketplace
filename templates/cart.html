@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link active">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <a href="shop.html">Shop</a>
+        <span class="separator">/</span>
+        <span class="current">Cart</span>
+      </nav>
+
+      <h1 class="gl-special-heading--light" style="margin-bottom: var(--gl-space-xl);">Your <span>Shopping Cart</span></h1>
+
+      <!-- Cart Grid -->
+      <div class="cart-grid">
+        <!-- Cart Items List -->
+        <div class="cart-table-wrap">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Cart Row 1 -->
+              <tr>
+                <td>
+                  <div class="cart-item-info">
+                    <div class="cart-item-thumb">
+                      <img src="assets/images/deziqettd-e-300x300.jpg" alt="Action 01">
+                    </div>
+                    <div>
+                      <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem;"><a href="product-detail.html">Action 01</a></h4>
+                      <span style="font-size: 0.75rem; color: var(--gl-subtle-text-light);">Tier 1 NFT Script</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong style="color: var(--gl-strongest-text-light);">Rp 3.000.000</strong></td>
+                <td>
+                  <div class="quantity-picker">
+                    <button class="quantity-btn minus" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" class="quantity-input" value="1" min="1" readonly>
+                    <button class="quantity-btn plus" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </td>
+                <td><span style="color: var(--gl-secondary); font-weight: 700;">Rp 3.000.000</span></td>
+                <td>
+                  <button style="background: transparent; border: none; color: var(--gl-subtle-text-light); cursor: pointer; font-size: 1.1rem;" onclick="this.closest('tr').remove(); showToast('Item removed');">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Cart Row 2 -->
+              <tr>
+                <td>
+                  <div class="cart-item-info">
+                    <div class="cart-item-thumb">
+                      <img src="assets/images/cropped-Screenshot_3-300x300.png" alt="Movie Horror 01">
+                    </div>
+                    <div>
+                      <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem;"><a href="product-detail.html">Movie Horror 01</a></h4>
+                      <span style="font-size: 0.75rem; color: var(--gl-subtle-text-light);">Downloadable Pass</span>
+                    </div>
+                  </div>
+                </td>
+                <td><strong style="color: var(--gl-strongest-text-light);">Rp 3.000.000</strong></td>
+                <td>
+                  <div class="quantity-picker">
+                    <button class="quantity-btn minus" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" class="quantity-input" value="1" min="1" readonly>
+                    <button class="quantity-btn plus" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </td>
+                <td><span style="color: var(--gl-secondary); font-weight: 700;">Rp 3.000.000</span></td>
+                <td>
+                  <button style="background: transparent; border: none; color: var(--gl-subtle-text-light); cursor: pointer; font-size: 1.1rem;" onclick="this.closest('tr').remove(); showToast('Item removed');">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Coupon Input -->
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+            <input type="text" placeholder="Promo code or Creator Coupon" class="form-input" style="max-width: 260px; padding: 0.6rem 1rem;">
+            <button class="gl-button--subtle-bright btn-sm" onclick="showToast('Coupon applied!')">Apply Coupon</button>
+          </div>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <div class="cart-order-summary">
+          <h3 style="font-size: 1.35rem; border-bottom: 1px solid var(--gl-bg-subtle-dark); padding-bottom: 0.75rem;">Cart Totals</h3>
+          
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>Rp 6.000.000</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Network / Gas Fee</span>
+            <span>0.0008 ETH (~Rp 25.000)</span>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span style="color: var(--gl-secondary);">Rp 6.025.000</span>
+          </div>
+
+          <p style="font-size: 0.8rem; color: var(--gl-subtle-text-light);">
+            Equivalent to <strong>0.0248 ETH</strong> via connected Web3 wallet.
+          </p>
+
+          <a href="checkout.html" class="gl-button--main" style="width: 100%; justify-content: center; text-align: center;">
+            Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

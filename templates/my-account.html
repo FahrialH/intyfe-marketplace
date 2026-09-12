@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" style="justify-content: center;">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span class="current">My Account</span>
+      </nav>
+
+      <!-- Auth Container -->
+      <div class="auth-box auth-container">
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active">Sign In</button>
+          <button class="auth-tab-btn">Register</button>
+        </div>
+
+        <!-- Login Pane -->
+        <div class="auth-pane active">
+          <form onsubmit="event.preventDefault(); showToast('Signed in successfully!');">
+            <div class="form-group">
+              <label class="form-label">Username or email address *</label>
+              <input type="text" class="form-control" required placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <input type="password" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.85rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--gl-subtle-text-light); cursor: pointer;">
+                <input type="checkbox"> Remember me
+              </label>
+              <a href="#" style="color: var(--gl-primary-light);">Lost password?</a>
+            </div>
+
+            <button type="submit" class="gl-button--main" style="width: 100%; justify-content: center;">
+              Log in <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+          </form>
+
+          <div style="text-align: center; margin: 1.5rem 0 1rem 0; color: var(--gl-subtle-text-light); font-size: 0.85rem;">
+            <span>or connect with web3</span>
+          </div>
+
+          <button class="gl-button--subtle-bright" style="width: 100%; justify-content: center;" onclick="showToast('Connecting MetaMask...')">
+            <i class="fa-solid fa-wallet" style="margin-right: 0.5rem;"></i> Connect Wallet
+          </button>
+        </div>
+
+        <!-- Register Pane -->
+        <div class="auth-pane">
+          <form onsubmit="event.preventDefault(); showToast('Account created successfully!');">
+            <div class="form-group">
+              <label class="form-label">Username *</label>
+              <input type="text" class="form-control" required placeholder="filmmaker_01">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email address *</label>
+              <input type="email" class="form-control" required placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <input type="password" class="form-control" required placeholder="••••••••">
+            </div>
+
+            <p style="font-size: 0.8rem; color: var(--gl-subtle-text-light); margin-bottom: 1.5rem;">
+              Your personal data will be used to support your experience throughout this website and manage access to your minted script tokens.
+            </p>
+
+            <button type="submit" class="gl-button--main" style="width: 100%; justify-content: center;">
+              Register <i class="fa-solid fa-user-plus"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

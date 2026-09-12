@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>arvicki Studio – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link active">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <a href="store-listing.html">Sellers</a>
+        <span class="separator">/</span>
+        <span class="current">arvicki</span>
+      </nav>
+
+      <!-- Store Profile Header -->
+      <div style="background: var(--gl-bg-shade-dark); border: 1px solid var(--gl-bg-subtle-dark); border-radius: var(--gl-radius-l); overflow: hidden; margin-bottom: var(--gl-space-2xl);">
+        <div style="height: 200px; background: linear-gradient(135deg, var(--gl-primary-dark), #111); position: relative;">
+          <img src="assets/images/default-store-banner.png" alt="Studio Banner" style="width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; bottom: -40px; left: 2.5rem; width: 88px; height: 88px; border-radius: var(--gl-radius-circle); border: 4px solid var(--gl-bg-shade-dark); overflow: hidden; background: #222;">
+            <img src="assets/images/cropped-image-180x180.png" alt="arvicki Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        </div>
+
+        <div style="padding: 3.5rem 2.5rem 2rem 2.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h1 style="font-size: 1.8rem; margin: 0;">arvicki</h1>
+              <span class="badge badge-gold"><i class="fa-solid fa-check"></i> Verified Studio</span>
+            </div>
+            <p style="color: var(--gl-subtle-text-light); font-size: 0.95rem; margin-bottom: 0.5rem;">
+              <i class="fa-solid fa-location-dot" style="color: var(--gl-primary);"></i> Jl Modern Industri XXIV BG No 9, Serang, Banten, Indonesia
+            </p>
+            <p style="max-width: 600px; font-size: 0.95rem; color: var(--gl-base-text-light);">
+              Independent Web3 film studio producing high-stakes thrillers, hard science fiction, and digital collectible script assets.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="gl-button--main" onclick="showToast('Followed arvicki studio!')"><i class="fa-solid fa-plus"></i> Follow Studio</button>
+            <button class="gl-button--subtle-bright"><i class="fa-regular fa-envelope"></i> Contact</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio's Catalog Title -->
+      <div class="shop-header">
+        <div>
+          <h2>Studio <span>Releases</span></h2>
+          <p style="color: var(--gl-subtle-text-light);">Screenplays and digital collectibles created by arvicki</p>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="grid grid-3">
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/deziqettd-e-300x300.jpg" alt="Action 01">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Action / Thriller</span>
+            <h3 class="product-name"><a href="product-detail.html">Action 01</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>3.000.000 <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light);">(0.012 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('&ldquo;Action 01&rdquo; added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/cropped-Screenshot_3-300x300.png" alt="Movie Horror 01">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Horror / Sci-Fi</span>
+            <h3 class="product-name"><a href="product-detail.html">Movie Horror 01</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>3.000.000 <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light);">(0.012 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('&ldquo;Movie Horror 01&rdquo; added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop & Marketplace – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link active">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span class="current">Shop</span>
+      </nav>
+
+      <!-- Shop Header & Toolbar -->
+      <div class="shop-header">
+        <div>
+          <h1 class="gl-special-heading--light">Marketplace <span>Catalog</span></h1>
+          <p style="color: var(--gl-subtle-text-light); margin-top: 0.25rem;">Showing active film scripts, collectibles, and production passes</p>
+        </div>
+
+        <div class="shop-toolbar">
+          <label for="shop-sort" style="font-size: 0.85rem; color: var(--gl-subtle-text-light);">Sort by:</label>
+          <select id="shop-sort" class="shop-sort-select">
+            <option value="menu_order" selected>Default sorting</option>
+            <option value="popularity">Sort by popularity</option>
+            <option value="rating">Sort by average rating</option>
+            <option value="date">Sort by latest</option>
+            <option value="price-asc">Sort by price: low to high</option>
+            <option value="price-desc">Sort by price: high to low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="grid grid-4">
+        <!-- Product 1 -->
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/deziqettd-e-300x300.jpg" alt="Action 01">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Action / Thriller</span>
+            <h3 class="product-name"><a href="product-detail.html">Action 01</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>3.000.000
+              <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light); font-weight: normal; margin-left: 6px;">(0.012 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('&ldquo;Action 01&rdquo; added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/cropped-Screenshot_3-300x300.png" alt="Movie Horror 01">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Horror / Sci-Fi</span>
+            <h3 class="product-name"><a href="product-detail.html">Movie Horror 01</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>3.000.000
+              <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light); font-weight: normal; margin-left: 6px;">(0.012 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('&ldquo;Movie Horror 01&rdquo; added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/rdaxhyjjc1o-300x200.jpg" alt="Protocol Genesis Collector NFT">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Sci-Fi Franchise</span>
+            <h3 class="product-name"><a href="product-detail.html">Protocol Genesis NFT</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>7.500.000
+              <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light); font-weight: normal; margin-left: 6px;">(0.030 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('Protocol Genesis NFT added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card">
+          <a href="product-detail.html" class="product-thumb">
+            <img src="assets/images/sr8njxgjes0-300x300.jpg" alt="Limited Edition Studio Hoodie">
+          </a>
+          <div class="product-info">
+            <span class="product-category">Official Merchandise</span>
+            <h3 class="product-name"><a href="product-detail.html">Intyfe Studio Hoodie</a></h3>
+            <div class="product-price">
+              <span class="currency">Rp</span>1.250.000
+              <span style="font-size: 0.8rem; color: var(--gl-subtle-text-light); font-weight: normal; margin-left: 6px;">(0.005 ETH)</span>
+            </div>
+          </div>
+          <button class="bricks-button bricks-background-primary btn-sm" onclick="showToast('Intyfe Studio Hoodie added to cart!')">
+            <i class="fa-solid fa-cart-plus"></i> Add to cart
+          </button>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <span class="page-num active">1</span>
+        <a href="#" class="page-num">2</a>
+        <a href="#" class="page-num"><i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
+            <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+          </a>
+          <p style="color: var(--gl-subtle-text-light); font-size: 0.9rem; max-width: 320px;">
+            The premier blockchain-powered cinema marketplace connecting filmmakers, investors, and fans globally.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Explore</h4>
+          <div class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="stories.html">Stories & Scripts</a>
+            <a href="shop.html">Marketplace</a>
+            <a href="store-listing.html">Sellers & Studios</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Resources</h4>
+          <div class="footer-nav">
+            <a href="#">Documentation</a>
+            <a href="#">Tokenomics</a>
+            <a href="#">Support Hub</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Stay Updated</h4>
+          <form class="gl-subscribe--light" onsubmit="event.preventDefault(); showToast('Subscribed successfully!');">
+            <input type="email" placeholder="Your Email" required>
+            <button type="submit" class="bricks-button bricks-background-primary btn-sm">Send</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="https://facebook.com" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://instagram.com" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://youtube.com" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

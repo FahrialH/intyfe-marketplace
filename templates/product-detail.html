@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Action 01 – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link active">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <a href="shop.html">Shop</a>
+        <span class="separator">/</span>
+        <span class="current">Action 01</span>
+      </nav>
+
+      <!-- Product Detail Grid -->
+      <div class="product-detail-grid">
+        <!-- Gallery Column -->
+        <div class="product-gallery">
+          <div class="product-main-image">
+            <img src="assets/images/deziqettd-e-892x1024.jpg" alt="Action 01 Poster">
+          </div>
+          <div class="product-thumbs-row">
+            <div class="product-thumb-item active" data-img-src="assets/images/deziqettd-e-892x1024.jpg">
+              <img src="assets/images/deziqettd-e-300x300.jpg" alt="Thumb 1">
+            </div>
+            <div class="product-thumb-item" data-img-src="assets/images/0n4jhvgs4zs-1024x683.jpg">
+              <img src="assets/images/0n4jhvgs4zs-300x200.jpg" alt="Thumb 2">
+            </div>
+            <div class="product-thumb-item" data-img-src="assets/images/rdaxhyjjc1o-1024x683.jpg">
+              <img src="assets/images/rdaxhyjjc1o-300x200.jpg" alt="Thumb 3">
+            </div>
+          </div>
+        </div>
+
+        <!-- Info & Actions Column -->
+        <div class="product-summary">
+          <div class="product-badge-group">
+            <span class="badge badge-primary">NFT Tier 1</span>
+            <span class="badge badge-gold">Verified IP</span>
+          </div>
+
+          <h1 class="gl-special-heading--light">Action <span>01</span></h1>
+
+          <div class="product-price-box">
+            <span class="price-eth">0.012 ETH</span>
+            <span class="price-fiat">(Rp 3.000.000)</span>
+          </div>
+
+          <p style="color: var(--gl-base-text-light); font-size: 1.05rem; line-height: 1.7;">
+            Action 01 is an exclusive early-access screenplay & digital production collectible. Holders gain voting rights for primary cast selection, private director table reads, and fractionalized royalty streaming.
+          </p>
+
+          <div class="product-meta-list">
+            <div class="product-meta-item">
+              <strong>Edition Supply</strong>
+              <span>50 / 100 Minted</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Contract Standard</strong>
+              <span>ERC-721 (Polygon/Ethereum)</span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Creator / Studio</strong>
+              <span><a href="store-detail.html" style="color: var(--gl-primary-light);">arvicki Studio</a></span>
+            </div>
+            <div class="product-meta-item">
+              <strong>Category</strong>
+              <span>Action / Noir Thriller</span>
+            </div>
+          </div>
+
+          <!-- Quantity and Add to Cart -->
+          <div style="display: flex; gap: 1.25rem; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
+            <div class="quantity-picker">
+              <button class="quantity-btn minus" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+              <input type="number" class="quantity-input" value="1" min="1" max="10" readonly>
+              <button class="quantity-btn plus" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <button class="gl-button--main" onclick="showToast('Added Action 01 to your cart!')">
+              Add to Cart <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+
+            <a href="checkout.html" class="gl-button--subtle-bright">
+              Buy Now
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- WooCommerce / Bricks Tabs -->
+      <div class="tabs-container" style="margin-top: var(--gl-space-3xl);">
+        <div class="tab-menu">
+          <button class="tab-title active">Description</button>
+          <button class="tab-title">Reviews (3)</button>
+          <button class="tab-title">Seller Profile</button>
+        </div>
+
+        <div class="tab-pane active" style="background: var(--gl-bg-shade-dark); border: 1px solid var(--gl-bg-subtle-dark); border-radius: var(--gl-radius-m); padding: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Screenplay Overview</h3>
+          <p>
+            Written by leading indie scriptwriters, Action 01 captures the pulse-pounding chase across futuristic industrial zones. Features full scene annotations, storyboard sketches, and soundtrack moodboards accessible only through your connected wallet.
+          </p>
+        </div>
+
+        <div class="tab-pane" style="background: var(--gl-bg-shade-dark); border: 1px solid var(--gl-bg-subtle-dark); border-radius: var(--gl-radius-m); padding: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Community Ratings & Reviews</h3>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="border-bottom: 1px solid var(--gl-bg-subtle-dark); padding-bottom: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <strong>Alex V. (Token Holder #04)</strong>
+                <span style="color: var(--gl-secondary);"><i class="fa-solid fa-star"></i> 5.0</span>
+              </div>
+              <p style="font-size: 0.9rem; color: var(--gl-subtle-text-light);">Exceptional dialogue pacing. The private table read recording alone made this tier worth every penny.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" style="background: var(--gl-bg-shade-dark); border: 1px solid var(--gl-bg-subtle-dark); border-radius: var(--gl-radius-m); padding: 2rem;">
+          <h3 style="margin-bottom: 1rem;">About arvicki Studios</h3>
+          <p>Independent production house specializing in cyberpunk thrillers and neo-noir cinematics. Based in Serang, Banten, Indonesia.</p>
+          <a href="store-detail.html" class="bricks-button bricks-background-primary btn-sm" style="margin-top: 1rem;">Visit Studio Profile</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

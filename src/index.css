@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gl-primary: #d81395;
+  --color-gl-primary-medium: hsl(321, 68%, 36%);
+  --color-gl-primary-dark: hsl(321, 76%, 27%);
+  --color-gl-primary-light: hsl(321, 100%, 90%);
+
+  --color-gl-secondary: #f4bb28;
+  --color-gl-secondary-light: #fff2c6;
+  --color-gl-secondary-medium: #e3ae24;
+  --color-gl-secondary-dark: #b97a1c;
+
+  --color-gl-bg-base-dark: #0a0a0a;
+  --color-gl-bg-shade-dark: #151515;
+  --color-gl-bg-shade-2-dark: #222222;
+
+  --font-heading: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+/* Include template design system */
+@import "./styles/variables.css";
+@import "./styles/base.css";
+@import "./styles/components.css";
+@import "./styles/pages.css";

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link active">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <a href="cart.html">Cart</a>
+        <span class="separator">/</span>
+        <span class="current">Checkout</span>
+      </nav>
+
+      <h1 class="gl-special-heading--light" style="margin-bottom: var(--gl-space-xl);">Secure <span>Checkout</span></h1>
+
+      <!-- Checkout Grid -->
+      <form class="checkout-grid" onsubmit="event.preventDefault(); showToast('Order placed successfully! Redirecting...'); setTimeout(() => window.location.href='my-account.html', 1500);">
+        <!-- Billing Details Form -->
+        <div style="background: var(--gl-bg-shade-dark); border: 1px solid var(--gl-bg-subtle-dark); border-radius: var(--gl-radius-m); padding: 2rem;">
+          <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--gl-bg-subtle-dark); padding-bottom: 0.75rem;">Billing & Mint Details</h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              <input type="text" class="form-control" required value="Fahri">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              <input type="text" class="form-control" required value="Pratama">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address (For Script Delivery) *</label>
+            <input type="email" class="form-control" required value="fahri@example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Web3 Mint Address / Wallet *</label>
+            <input type="text" class="form-control" required placeholder="0x... or ENS domain" value="0x71C...3a9F">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Street Address *</label>
+            <input type="text" class="form-control" required value="Jl. Sudirman No. 45">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">City *</label>
+              <input type="text" class="form-control" required value="Jakarta">
+            </div>
+            <div class="form-group">
+              <label class="form-label">State / Province *</label>
+              <input type="text" class="form-control" required value="DKI Jakarta">
+            </div>
+            <div class="form-group">
+              <label class="form-label">ZIP Code *</label>
+              <input type="text" class="form-control" required value="12190">
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Review & Payment Methods -->
+        <div class="cart-order-summary">
+          <h3 style="font-size: 1.35rem; border-bottom: 1px solid var(--gl-bg-subtle-dark); padding-bottom: 0.75rem;">Order Review</h3>
+
+          <div class="summary-row">
+            <span>Action 01 × 1</span>
+            <span>Rp 3.000.000</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Movie Horror 01 × 1</span>
+            <span>Rp 3.000.000</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Gas / Network Fee</span>
+            <span>0.0008 ETH</span>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total to Pay</span>
+            <span style="color: var(--gl-secondary);">Rp 6.025.000</span>
+          </div>
+
+          <!-- Payment Options -->
+          <div style="margin-top: 1rem; border-top: 1px solid var(--gl-bg-subtle-dark); padding-top: 1rem;">
+            <label class="form-label" style="margin-bottom: 0.75rem; display: block;">Payment Method</label>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <label style="display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.04); padding: 0.75rem; border-radius: var(--gl-radius-s); cursor: pointer;">
+                <input type="radio" name="payment" checked>
+                <div>
+                  <strong style="color: var(--gl-strongest-text-light); font-size: 0.9rem;">Web3 Crypto Wallet</strong>
+                  <div style="font-size: 0.75rem; color: var(--gl-subtle-text-light);">Instant NFT mint to your Ethereum/Polygon address</div>
+                </div>
+              </label>
+
+              <label style="display: flex; align-items: center; gap: 0.75rem; background: rgba(255,255,255,0.04); padding: 0.75rem; border-radius: var(--gl-radius-s); cursor: pointer;">
+                <input type="radio" name="payment">
+                <div>
+                  <strong style="color: var(--gl-strongest-text-light); font-size: 0.9rem;">Credit Card / Bank Transfer</strong>
+                  <div style="font-size: 0.75rem; color: var(--gl-subtle-text-light);">Direct fiat gateway in IDR/USD</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="gl-button--main" style="width: 100%; justify-content: center; margin-top: 1rem;">
+            Place Order & Mint <i class="fa-solid fa-lock"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

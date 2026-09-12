@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Directory – Intyfe</title>
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link active">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--gl-header-height) + 3rem); min-height: 80vh;">
+    <div class="container section">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span class="current">Store List</span>
+      </nav>
+
+      <!-- Store Listing Toolbar -->
+      <div class="shop-header">
+        <div>
+          <h1 class="gl-special-heading--light">Verified <span>Studios & Writers</span></h1>
+          <p style="color: var(--gl-subtle-text-light); margin-top: 0.25rem;">Total verified creators: 2</p>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <input type="search" placeholder="Search studios..." class="form-input" style="padding: 0.5rem 1rem; width: 220px;">
+          <select class="shop-sort-select">
+            <option value="most_recent" selected>Most Recent</option>
+            <option value="total_orders">Most Popular</option>
+            <option value="random">Random</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Sellers Grid -->
+      <div class="grid grid-3">
+        <!-- Seller 1: arvicki -->
+        <div class="vendor-card">
+          <div class="vendor-banner">
+            <img src="assets/images/default-store-banner.png" alt="arvicki banner">
+            <div class="vendor-avatar">
+              <img src="assets/images/cropped-image-180x180.png" alt="arvicki Avatar">
+            </div>
+          </div>
+          <div class="vendor-info">
+            <h2 class="vendor-name"><a href="store-detail.html">arvicki</a></h2>
+            <div style="color: var(--gl-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> (5.0)
+            </div>
+            <p class="vendor-address">
+              <i class="fa-solid fa-location-dot" style="color: var(--gl-primary);"></i>
+              Jl Modern Industri XXIV BG No 9, Serang, Banten, Indonesia
+            </p>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--gl-bg-subtle-dark); padding-top: 0.75rem;">
+              <a href="store-detail.html" class="bricks-button bricks-background-primary btn-sm" style="width: 100%;">Visit Studio</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seller 2: check01 -->
+        <div class="vendor-card">
+          <div class="vendor-banner">
+            <img src="assets/images/default-store-banner.png" alt="check01 banner">
+            <div class="vendor-avatar">
+              <img src="assets/images/cropped-image-192x192.png" alt="check01 Avatar">
+            </div>
+          </div>
+          <div class="vendor-info">
+            <h2 class="vendor-name"><a href="store-detail.html">check01</a></h2>
+            <div style="color: var(--gl-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i> (4.0)
+            </div>
+            <p class="vendor-address">
+              <i class="fa-solid fa-location-dot" style="color: var(--gl-primary);"></i>
+              Jakarta Digital Cinema Center, DKI Jakarta, Indonesia
+            </p>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--gl-bg-subtle-dark); padding-top: 0.75rem;">
+              <a href="store-detail.html" class="bricks-button bricks-background-primary btn-sm" style="width: 100%;">Visit Studio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intyfe – The Future of Film on the Blockchain</title>
+  <meta name="description" content="The first decentralized studio for scripts, characters, and the stories that define us.">
+  <link rel="icon" href="assets/images/cropped-image-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       Header Navigation
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-pill-inner">
+        <!-- Logo -->
+        <a href="index.html" class="brand-logo">
+          <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="header-nav">
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li><a href="stories.html" class="nav-link">Stories</a></li>
+            <li><a href="shop.html" class="nav-link">Shop</a></li>
+            <li><a href="store-listing.html" class="nav-link">Sellers</a></li>
+            <li><a href="cart.html" class="nav-link">Cart</a></li>
+          </ul>
+        </nav>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <a href="my-account.html" class="btn-signin">Sign in</a>
+          <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         Hero Section
+         ========================================================================== -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="gl-subheading">All about your vision</span>
+            <h1 class="gl-special-heading--light">
+              Stop pitching to gatekeepers. <span>Start publishing to your audience.</span>
+            </h1>
+            <p>The first decentralized studio for scripts, characters, and the stories that define us.</p>
+            <div class="hero-actions">
+              <a href="shop.html" class="gl-button--main">
+                Start Chapter <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <a href="stories.html" class="gl-button--subtle-bright">
+                Explore Archive
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-media-wrapper">
+            <img src="assets/images/website-main-cover-1024x538.jpg" alt="Cinematic Film Production">
+            <div class="hero-media-overlay"></div>
+            <div class="hero-badge-pill">
+              <span class="pulse-dot"></span>
+              <span>Decentralized Studio Live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Now Showing / Featured Productions Carousel
+         ========================================================================== -->
+    <section class="section" style="background-color: var(--gl-bg-base-dark);">
+      <div class="container">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto var(--gl-space-xl) auto;">
+          <h2 class="gl-special-heading--light--center">Now <span>Showing</span></h2>
+          <p style="color: var(--gl-subtle-text-light); margin-top: 0.5rem;">
+            Instead of a static list, this is your "Active Productions" or "Featured Reels."
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <a href="shop.html" class="gl-button--main">Start Chapter <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="stories.html" class="gl-button--subtle-bright">Explore Archive</a>
+          </div>
+        </div>
+
+        <!-- Interactive Carousel -->
+        <div class="slider-container">
+          <div class="slider-track">
+            <!-- Card 1 -->
+            <div class="card-story">
+              <div class="card-story-image-wrap">
+                <img src="assets/images/deziqettd-e-892x1024.jpg" alt="Sacrifice at Sundown">
+                <div class="card-hover-action">
+                  <button class="gl-icon--main" aria-label="Favorite"><i class="fa-regular fa-heart"></i></button>
+                </div>
+              </div>
+              <div class="card-story-body">
+                <div>
+                  <h3 class="card-story-title"><a href="story-detail.html">Sacrifice at Sundown</a></h3>
+                  <p class="card-story-desc">A gritty noir Western exploring redemption in the twilight of an outlaw frontier.</p>
+                </div>
+                <div class="card-metrics">
+                  <div class="metric-item">
+                    <span class="metric-value">0.01 ETH</span>
+                    <span class="metric-label">Floor Price</span>
+                  </div>
+                  <div class="metric-item" style="text-align: right;">
+                    <span class="metric-value">123 ETH</span>
+                    <span class="metric-label">Total Volume</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-story">
+              <div class="card-story-image-wrap">
+                <img src="assets/images/rdaxhyjjc1o-1024x683.jpg" alt="Protocol: Genesis">
+                <div class="card-hover-action">
+                  <button class="gl-icon--main" aria-label="Favorite"><i class="fa-regular fa-heart"></i></button>
+                </div>
+              </div>
+              <div class="card-story-body">
+                <div>
+                  <h3 class="card-story-title"><a href="story-detail.html">Protocol: Genesis</a></h3>
+                  <p class="card-story-desc">Orbital space station thriller detailing humanity's first self-aware defense network.</p>
+                </div>
+                <div class="card-metrics">
+                  <div class="metric-item">
+                    <span class="metric-value">0.05 ETH</span>
+                    <span class="metric-label">Floor Price</span>
+                  </div>
+                  <div class="metric-item" style="text-align: right;">
+                    <span class="metric-value">87 ETH</span>
+                    <span class="metric-label">Total Volume</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-story">
+              <div class="card-story-image-wrap">
+                <img src="assets/images/qtzlcyvkq0u-1024x683.jpg" alt="The Silent Blueprint">
+                <div class="card-hover-action">
+                  <button class="gl-icon--main" aria-label="Favorite"><i class="fa-regular fa-heart"></i></button>
+                </div>
+              </div>
+              <div class="card-story-body">
+                <div>
+                  <h3 class="card-story-title"><a href="story-detail.html">The Silent Blueprint</a></h3>
+                  <p class="card-story-desc">Psychological thriller tracking a fugitive architect caught in a deadly conspiracy.</p>
+                </div>
+                <div class="card-metrics">
+                  <div class="metric-item">
+                    <span class="metric-value">0.02 ETH</span>
+                    <span class="metric-label">Floor Price</span>
+                  </div>
+                  <div class="metric-item" style="text-align: right;">
+                    <span class="metric-value">156 ETH</span>
+                    <span class="metric-label">Total Volume</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card-story">
+              <div class="card-story-image-wrap">
+                <img src="assets/images/tk_wt3dl2tw-1024x683.jpg" alt="Fractured Echoes">
+                <div class="card-hover-action">
+                  <button class="gl-icon--main" aria-label="Favorite"><i class="fa-regular fa-heart"></i></button>
+                </div>
+              </div>
+              <div class="card-story-body">
+                <div>
+                  <h3 class="card-story-title"><a href="story-detail.html">Fractured Echoes</a></h3>
+                  <p class="card-story-desc">Cyberpunk mystery spanning underground Tokyo dance clubs and neuro-hacking syndicates.</p>
+                </div>
+                <div class="card-metrics">
+                  <div class="metric-item">
+                    <span class="metric-value">0.08 ETH</span>
+                    <span class="metric-label">Floor Price</span>
+                  </div>
+                  <div class="metric-item" style="text-align: right;">
+                    <span class="metric-value">210 ETH</span>
+                    <span class="metric-label">Total Volume</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="slider-bottom-controls">
+          <div class="slider-arrows">
+            <button class="gl-slider-arrow--bright arrow-prev" aria-label="Previous Slide">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="gl-slider-arrow--bright arrow-next" aria-label="Next Slide">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         The Production Value (Features Grid)
+         ========================================================================== -->
+    <section class="section gl-bg-theme-1">
+      <div class="container" style="position: relative; z-index: 2;">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto var(--gl-space-2xl) auto;">
+          <h2 class="gl-special-heading--light--center">The Production <span>Value</span></h2>
+          <p style="color: var(--gl-base-text-light); margin-top: 0.5rem;">
+            Instead of "Features," we talk about what makes the platform "High Budget."
+          </p>
+        </div>
+
+        <div class="grid grid-3">
+          <!-- Item 1 -->
+          <div class="step-card">
+            <div class="step-content">
+              <h3>The Script Engine</h3>
+              <p>A distraction-free, professional-grade reader that respects your formatting and character notes.</p>
+            </div>
+            <div style="font-size: 2.5rem; color: var(--gl-primary);">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="step-card">
+            <div class="step-content">
+              <h3>IP Tokenization</h3>
+              <p>Turn every scene, character, or plot twist into a verifiable and collectible digital asset.</p>
+            </div>
+            <div style="font-size: 2.5rem; color: var(--gl-primary);">
+              <i class="fa-solid fa-link"></i>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="step-card">
+            <div class="step-content">
+              <h3>The Backlot</h3>
+              <p>A private space for your token holders to access raw footage, daily drafts, and director’s cuts.</p>
+            </div>
+            <div style="font-size: 2.5rem; color: var(--gl-primary);">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         From Script to Screen (Tabbed Workflow)
+         ========================================================================== -->
+    <section class="section" style="background-color: var(--gl-bg-base-dark);">
+      <div class="container">
+        <div style="margin-bottom: var(--gl-space-xl);">
+          <h2 class="gl-special-heading--light">From Script <span>to Screen</span></h2>
+          <p style="color: var(--gl-subtle-text-light);">
+            Visualized as a horizontal film strip or a timeline in a video editing software.
+          </p>
+        </div>
+
+        <div class="tabs-container">
+          <!-- Tab Navigation -->
+          <div class="tab-menu">
+            <button class="tab-title active">For Story Writer</button>
+            <button class="tab-title">For Investor</button>
+          </div>
+
+          <!-- Tab Pane 1: Writer -->
+          <div class="tab-pane active">
+            <div class="step-list">
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>The Pitch</h3>
+                  <p>Upload your screenplay, treatment, or character bible with cryptographic ownership proof.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>The Distribution</h3>
+                  <p>Mint your work into digital tiers (Bronze, Silver, Gold Editions) with custom royalties.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>The Franchise</h3>
+                  <p>Connect your tokens to real-world utility—merchandise, set visits, or Executive Producer credits.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Pane 2: Investor -->
+          <div class="tab-pane">
+            <div class="step-list">
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>Discover IP</h3>
+                  <p>Browse early-stage scripts and indie productions before they hit mainstream festivals.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>Acquire Shares</h3>
+                  <p>Buy fractionalized tokens representing streaming revenue shares and exclusive premiere tickets.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-content">
+                  <h3>Govern & Vote</h3>
+                  <p>Participate in casting votes, greenlight milestones, and unlock physical producer packages.</p>
+                </div>
+                <div class="step-number"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Wear the Story (Merch Section)
+         ========================================================================== -->
+    <section class="merch-section">
+      <div class="container">
+        <div class="merch-grid">
+          <div>
+            <span class="gl-subheading">Physical & Digital Fusion</span>
+            <h2 class="gl-special-heading gl-special-heading--light">Wear <span>the Story.</span></h2>
+            <p style="margin: 1rem 0 1.5rem 0; font-size: 1.05rem;">
+              Your fans don't just hold tokens; they wear your brand. Seamlessly integrate limited-run hoodies, posters, and physical scripts exclusively for your digital collectors.
+            </p>
+            <a href="shop.html" class="gl-button--main">
+              Explore Merch Store <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+          </div>
+          <div class="merch-preview">
+            <img src="assets/images/sr8njxgjes0-1024x1024.jpg" alt="Wear the Story Merch">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Greenlight CTA
+         ========================================================================== -->
+    <section class="section" style="background-color: var(--gl-bg-base-dark);">
+      <div class="container">
+        <div class="cta-greenlight">
+          <div>
+            <h2 class="gl-special-heading" style="margin-bottom: 0.75rem;">Ready for the Greenlight?</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+              Your story is waiting for its audience. Don't wait for a studio to say yes.
+            </p>
+            <a href="shop.html" class="gl-button--main">
+              Start the production <i class="fa-solid fa-clapperboard"></i>
+            </a>
+          </div>
+          <div class="cta-artwork">
+            <img src="assets/images/i8zpn7d-cis-1024x819.jpg" alt="Cinematic Vision Eye">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       Footer
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">
+            <img src="assets/images/cropped-image-1.png" alt="Intyfe Logo">
+          </a>
+          <p style="color: var(--gl-subtle-text-light); font-size: 0.9rem; max-width: 320px;">
+            The premier blockchain-powered cinema marketplace connecting filmmakers, investors, and fans globally.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Explore</h4>
+          <div class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="stories.html">Stories & Scripts</a>
+            <a href="shop.html">Marketplace</a>
+            <a href="store-listing.html">Sellers & Studios</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Resources</h4>
+          <div class="footer-nav">
+            <a href="#">Documentation</a>
+            <a href="#">Tokenomics</a>
+            <a href="#">Support Hub</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Stay Updated</h4>
+          <p style="font-size: 0.85rem; color: var(--gl-subtle-text-light); margin-bottom: 1rem;">
+            Subscribe to receive greenlight announcements and early script drops.
+          </p>
+          <form class="gl-subscribe--light" onsubmit="event.preventDefault(); showToast('Subscribed successfully!');">
+            <input type="email" placeholder="Your Email" required>
+            <button type="submit" class="bricks-button bricks-background-primary btn-sm">Send</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© All Copyright Reserved by Intyfe Marketplace.</span>
+        <div class="footer-socials">
+          <a href="https://facebook.com" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://instagram.com" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com" aria-label="X Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://youtube.com" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/slider.js"></script>
+</body>
+</html>
