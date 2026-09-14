@@ -91,3 +91,22 @@ export interface CarouselSlide {
   rating: number;
   status: string;
 }
+
+export interface NewsArticle {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  publishedAt: string;
+  readingTimeMinutes: number;
+  author: {
+    name: string;
+    avatar: string;
+    role: string;
+  };
+  tags?: string[];
+  featured?: boolean;
+}

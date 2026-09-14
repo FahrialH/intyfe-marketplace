@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { X, ShoppingBag, User, Film, Compass, Store } from 'lucide-react';
+import { X, ShoppingBag, User, Film, Compass, Store, Newspaper } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 interface MobileDrawerProps {
@@ -69,6 +69,17 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
               }
             >
               <ShoppingBag className="w-4 h-4" /> Shop
+            </NavLink>
+            <NavLink
+              to="/news"
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  isActive ? 'bg-[#d81395] text-white' : 'text-neutral-300 hover:bg-white/5 hover:text-white'
+                }`
+              }
+            >
+              <Newspaper className="w-4 h-4" /> News & Updates
             </NavLink>
             <NavLink
               to="/sellers"

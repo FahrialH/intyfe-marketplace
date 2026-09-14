@@ -76,6 +76,18 @@ export const Header: React.FC = () => {
                 </li>
                 <li>
                   <NavLink
+                    to="/news"
+                    className={({ isActive }) =>
+                      `text-sm font-medium transition-colors ${
+                        isActive ? 'text-white border-b-2 border-[#d81395] pb-1' : 'text-neutral-400 hover:text-white'
+                      }`
+                    }
+                  >
+                    News
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to="/sellers"
                     className={({ isActive }) =>
                       `text-sm font-medium transition-colors ${

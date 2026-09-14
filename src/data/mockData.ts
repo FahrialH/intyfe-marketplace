@@ -1,4 +1,4 @@
-import { Story, Product, Studio, CarouselSlide } from '../types';
+import { Story, Product, Studio, CarouselSlide, NewsArticle } from '../types';
 
 export const featuredSlides: CarouselSlide[] = [
   {
@@ -372,5 +372,72 @@ export const mockStudios: Studio[] = [
       twitter: 'https://twitter.com/intyfe',
       discord: 'https://discord.gg/intyfe',
     },
+  },
+];
+
+export const mockNews: NewsArticle[] = [
+  {
+    id: 'news-1',
+    slug: 'intyfe-protocol-v2-mainnet-launch',
+    title: 'Intyfe Protocol v2 Launches on Ethereum L2 with Zero-Gas Script Minting',
+    excerpt: 'Our major protocol upgrade introduces instant fractional ownership passes, zero-gas script timestamps, and automated secondary royalty splits for writing teams.',
+    content: `Today marks a pivotal milestone for decentralized film production. We are thrilled to announce that Intyfe Protocol v2 is officially live on Ethereum Layer 2 rollup networks.
+
+### What Changes in v2?
+
+Traditional filmmaking has long required creators to surrender their intellectual property rights early in development in exchange for fractional advance checks. With Intyfe v2, screenwriters retain autonomous cryptographic ownership of their manuscripts from the very first draft.
+
+Key highlights of the v2 protocol upgrade include:
+
+* **Zero-Gas Relayer Infrastructure**: Minting registered script drafts and casting passes no longer burdens indie writers with volatile gas fees. All standard transaction fees are sponsored through our decentralized sequencer relayer pool.
+* **Instant Dynamic Royalty Splits**: Collaborative writing duos and studios can set granular automated revenue-sharing splits directly on-chain. When a studio or producer purchases an option pass, funds are distributed concurrently to all verified wallets.
+* **Snapshot Protocol v2 Governance**: Passes now carry weighted governance voting privileges natively compatible with decentralized autonomous organizations (DAOs). Token holders can vote on production milestones, location scouting, and premiere schedules.
+
+### How to Get Started
+
+Creators can immediately navigate to their **Creator Studio Dashboard** to register their latest FDX, PDF, or Markdown screenplays. Passes are immediately minted with verifiable cryptographic timestamps visible on the public explorer.`,
+    image: '/assets/images/dhd4xzs3uk-1024x575.jpg',
+    category: 'Protocol Updates',
+    publishedAt: 'September 12, 2026',
+    readingTimeMinutes: 4,
+    author: {
+      name: 'Intyfe Core Engineering',
+      avatar: '/assets/images/cropped-image-180x180.png',
+      role: 'Core Contributors',
+    },
+    tags: ['Ethereum L2', 'Rollups', 'Smart Contracts', 'Creator Royalties'],
+    featured: true,
+  },
+  {
+    id: 'news-2',
+    slug: 'first-decentralized-feature-greenlit',
+    title: "Community Greenlights First Fully DAO-Funded Feature Film 'The Silent Frequency'",
+    excerpt: 'Over 1,200 token holders voted on Snapshot to approve the $1.8M production budget for Dr. Thorne\'s acclaimed psychological sci-fi thriller.',
+    content: `In a historic vote for independent cinema, the decentralized community of Intyfe pass holders has officially approved the complete production financing for *The Silent Frequency*, written by Dr. Thorne.
+
+### A Landslide Community Vote
+
+The governance proposal concluded with an overwhelming 98.4% majority in favor of greenlighting the feature script. Over 1,200 individual collectors and cinema DAOs participated in the vote, allocating 125,000 Voting Power (VP) across the governance quorum.
+
+### Budget & Production Roadmap
+
+The allocated $1.8M budget has been locked into a multi-signature smart escrow. Funds will be released autonomously in milestone tranches upon verification by community-elected production supervisors:
+
+1. **Pre-Production & Soundstage Booking**: Tranche #01 has been drawn to secure soundstages in Vancouver and begin practical set construction.
+2. **Casting Confirmation**: Executive pass holders will participate in next week's casting archetype feedback session, helping determine key supporting character profiles.
+3. **Principal Photography**: Camera roll is officially scheduled to commence in November 2026.
+
+Holding an official production pass entitles each collector to exclusive daily digital production dailies, signed concept art tokens, and an on-screen producer credit in the finished film.`,
+    image: '/assets/images/fv6hwouf29k-1024x683.jpg',
+    category: 'Production Slate',
+    publishedAt: 'September 8, 2026',
+    readingTimeMinutes: 5,
+    author: {
+      name: 'Elena Rostova',
+      avatar: '/assets/images/cropped-image-192x192.png',
+      role: 'Executive Producer',
+    },
+    tags: ['DAO Funding', 'Greenlight', 'The Silent Frequency', 'Cinema Governance'],
+    featured: false,
   },
 ];
