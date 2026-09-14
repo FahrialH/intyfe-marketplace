@@ -57,7 +57,7 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
                 <img
-                  src="/assets/images/website-main-cover-1024x538.jpg"
+                  src="assets/images/rkixtzpoq28.jpg"
                   alt="Cinematic Film Production"
                   className="w-full h-72 sm:h-96 object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
