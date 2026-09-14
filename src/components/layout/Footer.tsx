@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="site-footer bg-[#0a0a0a] border-t border-white/10 pt-16 pb-12">
+    <footer className="bg-[#0a0a0a] border-t border-white/10 pt-16 pb-12">
       <div className="container mx-auto px-4 max-w-[1200px]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Col 1: Brand */}

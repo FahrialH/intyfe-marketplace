@@ -1,5 +1,79 @@
 @import "tailwindcss";
-@import "./styles/variables.css";
-@import "./styles/base.css";
-@import "./styles/components.css";
-@import "./styles/pages.css";
+
+@theme {
+  --color-primary: #d81395;
+  --color-primary-medium: #9a106a;
+  --color-primary-dark: #6a0b4a;
+  --color-primary-light: #ffc4ec;
+
+  --color-secondary: #f4bb28;
+  --color-secondary-light: #fff2c6;
+  --color-secondary-medium: #e3ae24;
+  --color-secondary-dark: #b97a1c;
+
+  --color-surface-base: #0a0a0a;
+  --color-surface-card: #151515;
+  --color-surface-elevated: #222222;
+
+  --font-heading: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #0a0a0a;
+    color: #dddddd;
+    font-family: var(--font-body);
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    color: #dddddd;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* Custom dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #262626;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d81395;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-from-right {
+  animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

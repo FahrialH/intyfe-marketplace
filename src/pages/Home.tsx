@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, ShieldCheck, Flame, Compass, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Sparkles, Flame, Compass, ShoppingBag } from 'lucide-react';
 import { featuredSlides, mockStories, mockProducts } from '../data/mockData';
 import { FeaturedSlider } from '../components/features/FeaturedSlider';
 import { TabSwitcher } from '../components/features/TabSwitcher';
@@ -9,45 +9,45 @@ import { ProductCard } from '../components/features/ProductCard';
 
 export const Home: React.FC = () => {
   return (
-    <div className="space-y-24 pb-20">
+    <div className="space-y-16 sm:space-y-20 pb-16">
       {/* ==========================================================================
           Hero Section
           ========================================================================== */}
-      <section className="relative pt-32 sm:pt-40 pb-16 overflow-hidden">
+      <section className="relative pt-6 sm:pt-10 pb-8 sm:pb-12 overflow-hidden">
         {/* Background glow circle */}
-        <div className="absolute top-10 right-1/4 w-96 h-96 bg-[#d81395]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute top-40 left-10 w-72 h-72 bg-[#f4bb28]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-6 right-1/4 w-96 h-96 bg-[#d81395]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-24 left-10 w-72 h-72 bg-[#f4bb28]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-[#f4bb28]">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>All about your vision</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
                 Stop pitching to gatekeepers.{' '}
                 <span className="bg-gradient-to-r from-[#d81395] to-[#fff2c6] bg-clip-text text-transparent">
                   Start publishing to your audience.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-neutral-300 max-w-xl leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg text-neutral-300 max-w-xl leading-relaxed">
                 The first decentralized studio for scripts, characters, and the stories that define us. Fund, greenlight, and co-own cinema on the blockchain.
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1 sm:pt-2">
                 <Link
                   to="/shop"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-sm shadow-[0_0_25px_rgba(216,19,149,0.4)] transition-all hover:scale-105"
+                  className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-xs sm:text-sm shadow-[0_0_25px_rgba(216,19,149,0.4)] transition-all hover:scale-105"
                 >
                   <span>Start Chapter</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   to="/stories"
-                  className="px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold text-sm border border-white/15 backdrop-blur-md transition-all"
+                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold text-xs sm:text-sm border border-white/15 backdrop-blur-md transition-all"
                 >
                   Explore Archive
                 </Link>
@@ -59,15 +59,15 @@ export const Home: React.FC = () => {
                 <img
                   src="/assets/images/website-main-cover-1024x538.jpg"
                   alt="Cinematic Film Production"
-                  className="w-full h-80 sm:h-96 object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-72 sm:h-96 object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-emerald-500/30 text-xs font-semibold text-white">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-1.5 sm:gap-2 bg-black/70 backdrop-blur-md px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-emerald-500/30 text-[11px] sm:text-xs font-semibold text-white">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                   <span>Decentralized Studio Live</span>
                 </div>
-                <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-4 rounded-2xl border border-white/10">
-                  <span className="text-xs text-[#f4bb28] font-mono">FEATURE PRODUCTION #89</span>
+                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-black/60 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/10">
+                  <span className="text-[11px] sm:text-xs text-[#f4bb28] font-mono">FEATURE PRODUCTION #89</span>
                   <h4 className="text-white font-bold text-sm mt-0.5">The Silent Frequency</h4>
                   <p className="text-neutral-400 text-xs mt-1">Written by Dr. Thorne • 74 Holders Funded</p>
                 </div>

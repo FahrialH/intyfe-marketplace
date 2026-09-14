@@ -20,14 +20,14 @@ export const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`site-header fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
-          isScrolled ? 'py-2 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/10' : 'py-4 bg-transparent'
+        className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
+          isScrolled ? 'py-2 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/10' : 'py-3 sm:py-4 bg-transparent'
         }`}
       >
         <div className="container mx-auto px-4 max-w-[1200px]">
-          <div className="header-pill-inner flex items-center justify-between bg-[#151515]/80 backdrop-blur-xl border border-white/10 rounded-full px-6 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center justify-between bg-[#151515]/80 backdrop-blur-xl border border-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] min-h-[58px] sm:min-h-[64px]">
             {/* Logo */}
-            <Link to="/" className="brand-logo flex items-center gap-2 shrink-0">
+            <Link to="/" className="flex items-center gap-2 shrink-0">
               <img
                 src="/assets/images/cropped-image-1.png"
                 alt="Intyfe Logo"
@@ -36,8 +36,8 @@ export const Header: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="header-nav hidden md:block">
-              <ul className="nav-links flex items-center gap-8 list-none m-0 p-0">
+            <nav className="hidden md:block">
+              <ul className="flex items-center gap-5 lg:gap-8 list-none m-0 p-0">
                 <li>
                   <NavLink
                     to="/"
@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Header Actions */}
-            <div className="header-actions flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {wallet.connected ? (
                 <button
                   onClick={wallet.disconnect}
@@ -130,14 +130,14 @@ export const Header: React.FC = () => {
 
               <Link
                 to="/account"
-                className="btn-signin text-xs font-semibold px-4 py-2 rounded-full bg-[#d81395] text-white hover:bg-[#9a106a] transition-all shadow-[0_0_15px_rgba(216,19,149,0.3)]"
+                className="text-xs font-semibold px-3.5 sm:px-4 py-2 rounded-full bg-[#d81395] text-white hover:bg-[#9a106a] transition-all shadow-[0_0_15px_rgba(216,19,149,0.3)]"
               >
                 Sign in
               </Link>
 
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="mobile-menu-btn md:hidden text-white/80 hover:text-white p-2"
+                className="md:hidden text-white/80 hover:text-white p-1.5 sm:p-2"
                 aria-label="Open mobile navigation menu"
               >
                 <Menu className="w-6 h-6" />

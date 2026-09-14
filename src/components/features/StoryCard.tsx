@@ -19,15 +19,15 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
   };
 
   return (
-    <div className="card-story group">
-      <div className="card-story-image-wrap relative">
+    <div className="relative flex flex-col justify-between bg-[#151515] border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d81395]/40 hover:shadow-[0_15px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(216,19,149,0.15)] group min-w-0">
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-neutral-900">
         <img
           src={story.coverImage}
           alt={story.title}
           loading="lazy"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        <div className="card-hover-action">
+        <div className="absolute top-3 right-3 z-20 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
           <button
             onClick={handleLike}
             className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-md ${
@@ -47,12 +47,12 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
         </div>
       </div>
 
-      <div className="card-story-body">
+      <div className="p-5 sm:p-6 flex flex-col flex-1 justify-between gap-3.5 bg-[#151515]">
         <div>
-          <h3 className="card-story-title">
+          <h3 className="text-lg sm:text-xl font-bold text-white line-clamp-2 mb-1 group-hover:text-[#d81395] transition-colors">
             <Link to={`/story/${story.slug}`}>{story.title}</Link>
           </h3>
-          <p className="card-story-desc line-clamp-2">{story.logline}</p>
+          <p className="text-xs sm:text-sm text-neutral-400 line-clamp-2 leading-relaxed">{story.logline}</p>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-neutral-400">
@@ -66,12 +66,12 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
           <span>{story.readingTimeMinutes} min read</span>
         </div>
 
-        <div className="card-metrics">
-          <div className="metric-item flex flex-col">
-            <span className="metric-value font-bold text-white text-sm">
+        <div className="flex justify-between items-center pt-3 border-t border-white/10 mt-2">
+          <div className="flex flex-col">
+            <span className="text-sm font-bold bg-gradient-to-r from-[#d81395] to-[#fff2c6] bg-clip-text text-transparent">
               {story.mintPriceEth} ETH
             </span>
-            <span className="metric-label text-[11px] text-neutral-500 uppercase tracking-wider">
+            <span className="text-[10px] text-neutral-500 uppercase tracking-wider">
               Mint Price
             </span>
           </div>

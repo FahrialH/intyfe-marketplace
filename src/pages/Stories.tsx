@@ -24,7 +24,7 @@ export const Stories: React.FC = () => {
   }, [selectedGenre, searchTerm]);
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1200px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -35,8 +35,8 @@ export const Stories: React.FC = () => {
       {/* Featured Hero Story Banner */}
       {featuredStory && (
         <div className="relative rounded-3xl overflow-hidden bg-[#151515] border border-white/10 mb-16 shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 p-6 sm:p-12 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div className="lg:col-span-7 p-6 sm:p-12 space-y-4 flex flex-col justify-center">
               <div className="flex items-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-[#d81395] text-white text-xs font-semibold uppercase tracking-wider">
                   Featured Story
@@ -54,7 +54,7 @@ export const Stories: React.FC = () => {
                 {featuredStory.logline}
               </p>
 
-              <div className="flex items-center gap-4 text-xs text-neutral-400 pt-1">
+              <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs text-neutral-400 pt-1">
                 <span>By <strong className="text-white">{featuredStory.author.name}</strong></span>
                 <span>•</span>
                 <span>{featuredStory.readingTimeMinutes} min reading time</span>
@@ -79,7 +79,7 @@ export const Stories: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-5 h-72 sm:h-96 lg:h-full relative overflow-hidden">
+            <div className="lg:col-span-5 min-h-[280px] sm:min-h-[360px] lg:min-h-0 h-full relative overflow-hidden">
               <img
                 src={featuredStory.coverImage}
                 alt={featuredStory.title}

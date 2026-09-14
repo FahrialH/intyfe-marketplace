@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronRight, MapPin, CheckCircle2, Globe, MessageSquare, ShoppingBag, Film } from 'lucide-react';
+import { ChevronRight, MapPin, CheckCircle2, ShoppingBag, Film } from 'lucide-react';
 import { mockStudios, mockProducts, mockStories } from '../data/mockData';
 import { RatingStars } from '../components/common/RatingStars';
 import { ProductCard } from '../components/features/ProductCard';
@@ -19,7 +19,7 @@ export const StoreDetail: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1200px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -40,10 +40,10 @@ export const StoreDetail: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#151515] via-transparent to-transparent" />
         </div>
 
-        <div className="px-6 sm:px-10 pb-8 relative -mt-16 sm:-mt-20">
+        <div className="px-5 sm:px-10 pb-6 sm:pb-8 relative -mt-12 sm:-mt-20">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-            <div className="flex items-end gap-5">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-[#151515] overflow-hidden bg-black shadow-xl shrink-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-5">
+              <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full border-4 border-[#151515] overflow-hidden bg-black shadow-xl shrink-0">
                 <img
                   src={studio.avatarImage}
                   alt={studio.name}
@@ -51,12 +51,12 @@ export const StoreDetail: React.FC = () => {
                 />
               </div>
 
-              <div className="space-y-1 mb-2">
+              <div className="space-y-1 sm:mb-2">
                 <div className="flex items-center gap-2">
                   <h1 className="text-2xl sm:text-3xl font-extrabold text-white">{studio.name}</h1>
                   {studio.verified && (
                     <span title="Verified Studio">
-                      <CheckCircle2 className="w-5 h-5 text-[#f4bb28]" />
+                      <CheckCircle2 className="w-5 h-5 text-[#f4bb28] shrink-0" />
                     </span>
                   )}
                 </div>
@@ -91,7 +91,7 @@ export const StoreDetail: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-white/10 gap-8 mb-8">
+      <div className="flex border-b border-white/10 gap-6 sm:gap-8 mb-8 overflow-x-auto scrollbar-none whitespace-nowrap">
         <button
           onClick={() => setActiveTab('catalog')}
           className={`flex items-center gap-2 pb-4 text-sm font-semibold transition-colors relative ${

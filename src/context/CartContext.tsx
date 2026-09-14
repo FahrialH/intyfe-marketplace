@@ -134,7 +134,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#151515] border border-[hsl(321,79%,46%)] text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(216,19,149,0.3)] animate-bounce"
+          className="fixed bottom-6 right-6 z-[110] flex items-center gap-3 bg-[#151515] border border-[hsl(321,79%,46%)] text-white px-5 py-3 rounded-full shadow-[0_0_20px_rgba(216,19,149,0.3)] animate-bounce"
         >
           <span className="w-2.5 h-2.5 rounded-full bg-[hsl(321,79%,46%)] animate-ping" />
           <span className="text-sm font-medium">{toastMessage}</span>

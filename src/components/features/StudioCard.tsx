@@ -10,7 +10,7 @@ interface StudioCardProps {
 
 export const StudioCard: React.FC<StudioCardProps> = ({ studio }) => {
   return (
-    <div className="vendor-card bg-[#151515] border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-[#d81395]/40 hover:shadow-xl">
+    <div className="bg-[#151515] border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-[#d81395]/40 hover:shadow-xl min-w-0">
       <div>
         {/* Banner with avatar */}
         <div className="relative h-28 w-full bg-neutral-800">

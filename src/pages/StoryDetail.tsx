@@ -22,7 +22,7 @@ export const StoryDetail: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[900px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[900px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -104,7 +104,7 @@ export const StoryDetail: React.FC = () => {
         <ScriptReader story={story} />
 
         {/* Collector Action Card */}
-        <div className="bg-[#151515] border border-[#d81395]/40 rounded-3xl p-6 sm:p-8 my-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-[0_0_30px_rgba(216,19,149,0.15)]">
+        <div className="bg-[#151515] border border-[#d81395]/40 rounded-3xl p-6 sm:p-8 my-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-[0_0_30px_rgba(216,19,149,0.15)]">
           <div>
             <span className="text-xs uppercase font-mono text-[#f4bb28] tracking-wider block mb-1">
               PRODUCTION TIER #01 PASS
@@ -117,8 +117,8 @@ export const StoryDetail: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0">
-            <div className="text-right">
+          <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto shrink-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-white/10">
+            <div className="text-left sm:text-right">
               <span className="block text-xl font-extrabold text-[#f4bb28]">{story.mintPriceEth} ETH</span>
               <span className="text-[11px] text-neutral-400">≈ ${story.mintPriceUsd} USD</span>
             </div>

@@ -34,7 +34,7 @@ export const Cart: React.FC = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="pt-36 pb-24 container mx-auto px-4 max-w-[800px] text-center">
+      <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[800px] text-center">
         <div className="bg-[#151515] border border-white/10 rounded-3xl p-12 space-y-6 shadow-2xl">
           <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto text-neutral-400">
             <ShoppingBag className="w-8 h-8" />
@@ -56,7 +56,7 @@ export const Cart: React.FC = () => {
   }
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1200px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -82,36 +82,37 @@ export const Cart: React.FC = () => {
           <div className="bg-[#151515] border border-white/10 rounded-2xl overflow-hidden">
             <div className="divide-y divide-white/10">
               {cartItems.map((item) => (
-                <div key={item.product.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 w-full sm:w-auto">
+                <div key={item.product.id} className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 w-full sm:flex-1 min-w-0">
                     <img
                       src={item.product.image}
                       alt={item.product.title}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover bg-black shrink-0 border border-white/10"
                     />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <span className="text-[10px] uppercase font-bold text-[#f4bb28] tracking-wider block">
                         {item.product.category}
                       </span>
                       <Link
                         to={`/product/${item.product.slug}`}
-                        className="font-bold text-white text-sm sm:text-base hover:text-[#d81395] transition-colors line-clamp-1"
+                        className="font-bold text-white text-sm sm:text-base hover:text-[#d81395] transition-colors truncate block"
+                        title={item.product.title}
                       >
                         {item.product.title}
                       </Link>
-                      <div className="text-xs text-neutral-400 mt-1">
+                      <div className="text-xs text-neutral-400 mt-1 truncate">
                         Unit: {formatCurrency(item.product.price)} ({item.product.priceEth} ETH)
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-white/5">
+                  <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-white/5 shrink-0">
                     <QuantityStepper
                       quantity={item.quantity}
                       onQuantityChange={(q) => updateQuantity(item.product.id, q)}
                     />
 
-                    <div className="text-right min-w-28">
+                    <div className="text-right min-w-24 sm:min-w-28 shrink-0">
                       <div className="text-sm sm:text-base font-bold text-white">
                         {formatCurrency(item.product.price * item.quantity)}
                       </div>

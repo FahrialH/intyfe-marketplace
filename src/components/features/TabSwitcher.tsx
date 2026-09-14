@@ -68,13 +68,13 @@ export const TabSwitcher: React.FC = () => {
   return (
     <div className="w-full">
       {/* Tab Buttons Pill */}
-      <div className="flex justify-center mb-10">
-        <div className="inline-flex p-1.5 rounded-full bg-[#151515] border border-white/10 shadow-lg">
+      <div className="flex justify-center mb-8 sm:mb-10 w-full overflow-hidden">
+        <div className="inline-flex max-w-full overflow-x-auto scrollbar-none p-1.5 rounded-full bg-[#151515] border border-white/10 shadow-lg">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 transition-all ${
                 activeTabId === tab.id
                   ? 'bg-[#d81395] text-white shadow-[0_0_15px_rgba(216,19,149,0.4)]'
                   : 'text-neutral-400 hover:text-white'

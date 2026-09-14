@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ChevronRight, ShieldCheck, Wallet, CreditCard, CheckCircle, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const Checkout: React.FC = () => {
   const { cartItems, subtotal, subtotalEth, clearCart, wallet, showToast } = useCart();
-  const navigate = useNavigate();
 
   const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'card'>('crypto');
   const [walletInput, setWalletInput] = useState(wallet.address || '0x742d35Cc6634C0532925a3b844Bc454e4438f44e');
@@ -47,7 +46,7 @@ export const Checkout: React.FC = () => {
 
   if (orderComplete) {
     return (
-      <div className="pt-36 pb-24 container mx-auto px-4 max-w-[700px] text-center">
+      <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[700px] text-center">
         <div className="bg-[#151515] border border-emerald-500/30 rounded-3xl p-10 sm:p-12 space-y-6 shadow-[0_0_50px_rgba(0,195,6,0.15)]">
           <div className="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
             <CheckCircle className="w-10 h-10" />
@@ -89,7 +88,7 @@ export const Checkout: React.FC = () => {
   }
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1200px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -263,9 +262,9 @@ export const Checkout: React.FC = () => {
 
               <div className="max-h-60 overflow-y-auto divide-y divide-white/5 pr-1">
                 {cartItems.map((item) => (
-                  <div key={item.product.id} className="py-3 flex items-center justify-between text-xs">
-                    <div className="pr-4">
-                      <span className="font-semibold text-white line-clamp-1">{item.product.title}</span>
+                  <div key={item.product.id} className="py-3 flex items-center justify-between text-xs gap-3">
+                    <div className="min-w-0 flex-1">
+                      <span className="font-semibold text-white truncate block" title={item.product.title}>{item.product.title}</span>
                       <span className="text-neutral-400">Qty: {item.quantity}</span>
                     </div>
                     <span className="font-mono text-white shrink-0">

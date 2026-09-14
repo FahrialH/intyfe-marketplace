@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronRight, ShoppingCart, ShieldCheck, Sparkles, Share2, Layers } from 'lucide-react';
+import { ChevronRight, ShoppingCart, ShieldCheck, Share2, Layers } from 'lucide-react';
 import { mockProducts } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import { RatingStars } from '../components/common/RatingStars';
@@ -31,7 +31,7 @@ export const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1200px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -102,7 +102,7 @@ export const ProductDetail: React.FC = () => {
               {product.title}
             </h1>
 
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex flex-wrap items-center gap-y-2 gap-x-3 sm:gap-x-4 mb-6">
               <RatingStars rating={product.rating} size={15} />
               <span className="text-xs text-neutral-500">•</span>
               <span className="text-xs text-neutral-400">{product.reviewsCount} verified reviews</span>
@@ -135,9 +135,9 @@ export const ProductDetail: React.FC = () => {
                   {product.tier} Edition
                 </span>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-3 min-w-0">
                 <span className="text-[10px] uppercase text-neutral-400 font-bold block">Contract</span>
-                <span className="text-xs font-mono text-[#f4bb28] truncate block mt-1">
+                <span className="text-xs font-mono text-[#f4bb28] truncate block mt-1" title={product.tokenContract || '0x438...991A'}>
                   {product.tokenContract || '0x438...991A'}
                 </span>
               </div>
@@ -175,7 +175,7 @@ export const ProductDetail: React.FC = () => {
 
       {/* Tabs Section */}
       <div className="bg-[#151515] border border-white/10 rounded-3xl p-6 sm:p-10 mb-16">
-        <div className="flex border-b border-white/10 gap-6 mb-6">
+        <div className="flex border-b border-white/10 gap-6 mb-6 overflow-x-auto scrollbar-none whitespace-nowrap">
           <button
             onClick={() => setActiveTab('description')}
             className={`pb-3 text-sm font-semibold transition-colors relative ${

@@ -19,11 +19,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   }).format(product.price);
 
   return (
-    <div className="product-card flex flex-col justify-between bg-[#151515] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d81395]/40 hover:shadow-[0_12px_24px_rgba(0,0,0,0.5),0_0_20px_rgba(216,19,149,0.15)]">
+    <div className="flex flex-col justify-between bg-[#151515] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d81395]/40 hover:shadow-[0_12px_24px_rgba(0,0,0,0.5),0_0_20px_rgba(216,19,149,0.15)] min-w-0">
       <div>
         <Link
           to={`/product/${product.slug}`}
-          className="product-thumb block relative aspect-square rounded-xl overflow-hidden bg-black/40 mb-3.5 group"
+          className="block relative aspect-square rounded-xl overflow-hidden bg-black/40 mb-3.5 group"
         >
           <img
             src={product.image}
@@ -38,17 +38,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </Link>
 
-        <div className="product-info flex flex-col gap-1 mb-4">
-          <span className="product-category text-xs text-neutral-400 font-medium">
+        <div className="flex flex-col gap-1 mb-4 min-w-0">
+          <span className="text-xs text-neutral-400 font-medium uppercase tracking-wider">
             {product.category}
           </span>
-          <h3 className="product-name font-semibold text-sm text-white line-clamp-1 hover:text-[#d81395] transition-colors">
+          <h3 className="font-semibold text-sm text-white line-clamp-1 hover:text-[#d81395] transition-colors">
             <Link to={`/product/${product.slug}`}>{product.title}</Link>
           </h3>
           <div className="my-1">
             <RatingStars rating={product.rating} size={12} showScore={false} />
           </div>
-          <div className="product-price flex items-baseline gap-2 mt-1">
+          <div className="flex items-baseline gap-2 mt-1">
             <span className="font-bold text-white text-base">
               {formattedPrice}
             </span>

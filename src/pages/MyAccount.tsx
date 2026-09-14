@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Wallet, ShieldCheck, User, Film, Layers, LogOut, ChevronRight } from 'lucide-react';
+import { Wallet, User, Layers, LogOut, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { mockStories, mockProducts } from '../data/mockData';
 
@@ -24,7 +24,7 @@ export const MyAccount: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 pb-24 container mx-auto px-4 max-w-[1000px]">
+    <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1000px]">
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-xs text-neutral-400 mb-8">
         <Link to="/" className="hover:text-white transition-colors">Home</Link>
