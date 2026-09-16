@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, ShoppingBag, Wallet } from 'lucide-react';
+import { Menu, ShoppingBag, Wallet, User as UserIcon } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { MobileDrawer } from './MobileDrawer';
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { itemCount, wallet } = useCart();
+  const { user, profile, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -140,12 +142,29 @@ export const Header: React.FC = () => {
                 </button>
               )}
 
-              <Link
-                to="/account"
-                className="text-xs font-semibold px-3.5 sm:px-4 py-2 rounded-full bg-[#d81395] text-white hover:bg-[#9a106a] transition-all shadow-[0_0_15px_rgba(216,19,149,0.3)]"
-              >
-                Sign in
-              </Link>
+              {user ? (
+                <Link
+                  to="/account"
+                  className="flex items-center gap-1.5 text-xs font-semibold px-3 sm:px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all"
+                >
+                  <UserIcon className="w-3.5 h-3.5 text-[#f4bb28]" />
+                  <span className="max-w-[80px] sm:max-w-[120px] truncate">
+                    {profile?.full_name || user.email?.split('@')[0]}
+                  </span>
+                  {isAdmin && (
+                    <span className="text-[10px] bg-[#d81395] text-white px-1.5 py-0.2 rounded-full font-bold">
+                      Admin
+                    </span>
+                  )}
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="text-xs font-semibold px-3.5 sm:px-4 py-2 rounded-full bg-[#d81395] text-white hover:bg-[#9a106a] transition-all shadow-[0_0_15px_rgba(216,19,149,0.3)]"
+                >
+                  Sign in
+                </Link>
+              )}
 
               <button
                 onClick={() => setMobileMenuOpen(true)}
