@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { X, ShoppingBag, User, Film, Compass, Store, Newspaper, Shield } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { SolanaWalletButton } from '../features/SolanaWalletButton';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -10,7 +11,7 @@ interface MobileDrawerProps {
 }
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) => {
-  const { itemCount, wallet } = useCart();
+  const { itemCount } = useCart();
   const { user, profile, isAdmin, signOut } = useAuth();
 
   if (!isOpen) return null;
@@ -116,29 +117,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
         </div>
 
         <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
-          {wallet.connected ? (
-            <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-[#f4bb28]/30">
-              <span className="text-xs font-mono text-neutral-300">
-                {wallet.address?.slice(0, 6)}...{wallet.address?.slice(-4)}
-              </span>
-              <button
-                onClick={wallet.disconnect}
-                className="text-xs text-rose-400 hover:underline"
-              >
-                Disconnect
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => {
-                wallet.connect();
-                onClose();
-              }}
-              className="w-full py-2.5 px-4 rounded-full text-xs font-bold text-black bg-[#f4bb28] hover:bg-[#e3ae24] transition-colors text-center"
-            >
-              Connect Wallet
-            </button>
-          )}
+          <SolanaWalletButton isMobile={true} showBadge={true} />
 
           {isAdmin && (
             <NavLink

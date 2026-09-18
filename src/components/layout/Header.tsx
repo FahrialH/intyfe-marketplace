@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, ShoppingBag, Wallet, User as UserIcon } from 'lucide-react';
+import { Menu, ShoppingBag, User as UserIcon } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { MobileDrawer } from './MobileDrawer';
+import { SolanaWalletButton } from '../features/SolanaWalletButton';
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { itemCount, wallet } = useCart();
+  const { itemCount } = useCart();
   const { user, profile, isAdmin } = useAuth();
 
   useEffect(() => {
@@ -123,24 +124,9 @@ export const Header: React.FC = () => {
 
             {/* Header Actions */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {wallet.connected ? (
-                <button
-                  onClick={wallet.disconnect}
-                  className="hidden sm:flex items-center gap-2 bg-[#151515] border border-[#f4bb28]/50 px-3.5 py-1.5 rounded-full text-xs font-mono text-[#f4bb28] hover:bg-[#f4bb28]/10 transition-colors"
-                  title="Disconnect wallet"
-                >
-                  <Wallet className="w-3.5 h-3.5" />
-                  <span>{wallet.address?.slice(0, 6)}...{wallet.address?.slice(-4)}</span>
-                </button>
-              ) : (
-                <button
-                  onClick={wallet.connect}
-                  className="hidden sm:flex items-center gap-2 bg-[#f4bb28] text-black px-3.5 py-1.5 rounded-full text-xs font-semibold hover:bg-[#e3ae24] transition-colors shadow-sm"
-                >
-                  <Wallet className="w-3.5 h-3.5" />
-                  <span>Connect</span>
-                </button>
-              )}
+              <div className="hidden sm:block">
+                <SolanaWalletButton showBadge={true} align="right" />
+              </div>
 
               {user ? (
                 <Link
