@@ -1,26 +1,57 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Wallet, User, Layers, LogOut, ChevronRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Wallet, User, Layers, LogOut, ChevronRight, Newspaper, Shield, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { mockStories, mockProducts } from '../data/mockData';
 
 export const MyAccount: React.FC = () => {
   const { wallet, showToast } = useCart();
+  const { user, profile, isAdmin, isSeller, role, signOut, linkSolanaWallet, signIn, signUp, demoSignIn } = useAuth();
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isLinking, setIsLinking] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    wallet.connect();
-    showToast(`Signed in successfully as ${email || 'Creator'}!`);
+    setAuthError(null);
+    const { error } = await signIn(email, password);
+    if (error) {
+      setAuthError(error.message);
+      return;
+    }
+    showToast(`Signed in successfully!`);
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    wallet.connect();
-    showToast(`Account created for ${username}! Web3 profile initialized.`);
+    setAuthError(null);
+    const { error } = await signUp(email, password, fullName || email.split('@')[0], 'buyer');
+    if (error) {
+      setAuthError(error.message);
+      return;
+    }
+    showToast(`Account created! Welcome to Intyfe.`);
+  };
+
+  const handleLinkWallet = async () => {
+    if (!wallet.address) {
+      wallet.connect();
+      return;
+    }
+    setIsLinking(true);
+    const res = await linkSolanaWallet(wallet.address);
+    setIsLinking(false);
+    if (res.success) {
+      showToast('Solana wallet linked to your Intyfe profile!');
+    } else {
+      showToast(res.error || 'Failed to link wallet');
+    }
   };
 
   return (
@@ -32,9 +63,10 @@ export const MyAccount: React.FC = () => {
         <span className="text-white font-medium">My Account</span>
       </nav>
 
-      {wallet.connected ? (
-        /* Connected User Dashboard View */
+      {user ? (
+        /* Logged In User View */
         <div className="space-y-8">
+          {/* Profile Card */}
           <div className="bg-[#151515] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-white/10">
               <div className="flex items-center gap-4">
@@ -45,22 +77,111 @@ export const MyAccount: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-bold text-white">Creator Studio Dashboard</h2>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 font-semibold px-2 py-0.5 rounded-full">
-                      Active
+                    <h2 className="text-xl font-bold text-white">
+                      {profile?.full_name || user.email?.split('@')[0] || 'Intyfe Member'}
+                    </h2>
+                    <span className={`text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full border ${
+                      isAdmin
+                        ? 'bg-[#d81395]/20 text-[#d81395] border-[#d81395]/40'
+                        : isSeller
+                        ? 'bg-[#f4bb28]/20 text-[#f4bb28] border-[#f4bb28]/40'
+                        : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                    }`}>
+                      {role || 'Buyer'}
                     </span>
                   </div>
-                  <p className="text-xs font-mono text-[#f4bb28] mt-1">{wallet.address}</p>
+                  <p className="text-xs text-neutral-400 mt-1">{user.email}</p>
                 </div>
               </div>
 
-              <button
-                onClick={wallet.disconnect}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-rose-500/20 text-neutral-400 hover:text-rose-300 border border-white/10 text-xs font-semibold transition-colors"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                <span>Disconnect</span>
-              </button>
+              <div className="flex items-center gap-3">
+                {isAdmin && (
+                  <button
+                    onClick={() => navigate('/admin/news')}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white text-xs font-semibold transition-all shadow-[0_0_15px_rgba(216,19,149,0.3)]"
+                  >
+                    <Newspaper className="w-3.5 h-3.5" />
+                    <span>Admin News CMS</span>
+                  </button>
+                )}
+
+                <button
+                  onClick={signOut}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-rose-500/20 text-neutral-400 hover:text-rose-300 border border-white/10 text-xs font-semibold transition-colors"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Admin Banner if Admin */}
+            {isAdmin && (
+              <div className="mt-6 p-4 rounded-2xl bg-gradient-to-r from-[#d81395]/20 to-[#f4bb28]/10 border border-[#d81395]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Shield className="w-5 h-5 text-[#f4bb28]" />
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                      Administrator Dashboard Active
+                    </h4>
+                    <p className="text-xs text-neutral-300">
+                      You have full access to publish, edit, and moderate editorial dispatches and marketplace catalogs.
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to="/admin/news"
+                  className="px-4 py-1.5 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white text-xs font-semibold transition-all shrink-0"
+                >
+                  Manage News &rarr;
+                </Link>
+              </div>
+            )}
+
+            {/* Solana Wallet Linking Section */}
+            <div className="mt-6 p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-white">
+                  <Wallet className="w-4 h-4 text-[#f4bb28]" />
+                  <span>Solana Web3 Wallet Integration</span>
+                </div>
+                {profile?.solana_wallet_address ? (
+                  <span className="flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Linked
+                  </span>
+                ) : (
+                  <span className="text-[11px] text-neutral-400">Not Linked</span>
+                )}
+              </div>
+
+              {profile?.solana_wallet_address ? (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <span className="font-mono text-xs text-[#f4bb28] bg-black/50 px-3 py-2 rounded-xl border border-white/10 break-all">
+                    {profile.solana_wallet_address}
+                  </span>
+                  <button
+                    onClick={() => linkSolanaWallet('')}
+                    className="text-xs text-neutral-400 hover:text-rose-400 underline self-start sm:self-auto"
+                  >
+                    Unlink
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <p className="text-xs text-neutral-400">
+                    {wallet.connected
+                      ? `Active Wallet: ${wallet.address?.slice(0, 8)}...${wallet.address?.slice(-6)}`
+                      : 'Connect your Phantom or Solflare wallet to bind your on-chain credentials.'}
+                  </p>
+                  <button
+                    onClick={handleLinkWallet}
+                    disabled={isLinking}
+                    className="px-4 py-2 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black text-xs font-bold transition-all shrink-0"
+                  >
+                    {wallet.connected ? 'Bind Active Wallet' : 'Connect & Link Wallet'}
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Dashboard Stats */}
@@ -77,8 +198,8 @@ export const MyAccount: React.FC = () => {
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <span className="text-xs text-neutral-400 block mb-1">Portfolio Value</span>
-                <span className="text-2xl font-extrabold text-[#d81395]">0.084 ETH</span>
-                <span className="text-[11px] text-neutral-400 block mt-1">≈ $294 USD</span>
+                <span className="text-2xl font-extrabold text-[#d81395]">0.084 SOL</span>
+                <span className="text-[11px] text-neutral-400 block mt-1">≈ 12.60 USD</span>
               </div>
             </div>
           </div>
@@ -120,31 +241,27 @@ export const MyAccount: React.FC = () => {
           </div>
         </div>
       ) : (
-        /* Sign In / Register View */
+        /* Sign In / Register Tabbed View */
         <div className="max-w-md mx-auto">
-          {/* Wallet One-Click Connect Banner */}
-          <div className="bg-[#151515] border border-[#f4bb28]/40 rounded-3xl p-6 sm:p-8 text-center space-y-4 mb-8 shadow-[0_0_30px_rgba(244,187,40,0.15)]">
-            <div className="w-12 h-12 rounded-full bg-[#f4bb28]/10 text-[#f4bb28] flex items-center justify-center mx-auto">
-              <Wallet className="w-6 h-6" />
+          {/* Quick Sign In / Sign Up Card */}
+          <div className="bg-[#151515] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+            <div className="text-center space-y-1">
+              <h2 className="text-xl font-bold text-white">Intyfe Member Portal</h2>
+              <p className="text-xs text-neutral-400">Sign in with your email or Solana web3 wallet</p>
             </div>
-            <h2 className="text-xl font-bold text-white">Instant Web3 Authentication</h2>
-            <p className="text-xs text-neutral-300 leading-relaxed">
-              Connect your Ethereum wallet (MetaMask, Coinbase, Rainbow) to manage script rights, collector passes, and studio payouts without passwords.
-            </p>
-            <button
-              onClick={wallet.connect}
-              className="w-full py-3 px-6 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black font-bold text-xs shadow-md transition-all active:scale-98"
-            >
-              Connect Web3 Wallet
-            </button>
-          </div>
 
-          {/* Traditional Auth Form */}
-          <div className="bg-[#151515] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            {authError && (
+              <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-2 text-rose-300 text-xs">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <p>{authError}</p>
+              </div>
+            )}
+
             {/* Tabs */}
-            <div className="grid grid-cols-2 p-1 bg-white/5 rounded-full mb-6 text-center">
+            <div className="grid grid-cols-2 p-1 bg-white/5 rounded-full text-center">
               <button
-                onClick={() => setActiveTab('login')}
+                type="button"
+                onClick={() => { setActiveTab('login'); setAuthError(null); }}
                 className={`py-2 rounded-full text-xs font-semibold transition-all ${
                   activeTab === 'login' ? 'bg-[#d81395] text-white shadow-sm' : 'text-neutral-400 hover:text-white'
                 }`}
@@ -152,7 +269,8 @@ export const MyAccount: React.FC = () => {
                 Sign in
               </button>
               <button
-                onClick={() => setActiveTab('register')}
+                type="button"
+                onClick={() => { setActiveTab('register'); setAuthError(null); }}
                 className={`py-2 rounded-full text-xs font-semibold transition-all ${
                   activeTab === 'register' ? 'bg-[#d81395] text-white shadow-sm' : 'text-neutral-400 hover:text-white'
                 }`}
@@ -164,9 +282,9 @@ export const MyAccount: React.FC = () => {
             {activeTab === 'login' ? (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="block text-xs text-neutral-400 mb-1">Username or Email *</label>
+                  <label className="block text-xs text-neutral-400 mb-1">Email Address *</label>
                   <input
-                    type="text"
+                    type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -187,33 +305,29 @@ export const MyAccount: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs pt-1">
-                  <label className="flex items-center gap-2 text-neutral-400 cursor-pointer">
-                    <input type="checkbox" className="rounded accent-[#d81395]" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#forgot" onClick={(e) => { e.preventDefault(); showToast('Password reset instructions sent.'); }} className="text-[#f4bb28] hover:underline">
-                    Forgot password?
-                  </a>
-                </div>
-
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-xs shadow-md transition-all mt-4"
+                  className="w-full py-3 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-xs shadow-md transition-all mt-4 cursor-pointer"
                 >
                   Sign in
                 </button>
+
+                <div className="pt-2 text-center">
+                  <Link to="/signup" className="text-xs text-[#f4bb28] hover:underline">
+                    Need a Seller / Creator account? Register here
+                  </Link>
+                </div>
               </form>
             ) : (
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
-                  <label className="block text-xs text-neutral-400 mb-1">Creator Username *</label>
+                  <label className="block text-xs text-neutral-400 mb-1">Full Name *</label>
                   <input
                     type="text"
                     required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="writer_neo"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Jane Doe"
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#d81395]"
                   />
                 </div>
@@ -244,12 +358,57 @@ export const MyAccount: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-xs shadow-md transition-all mt-4"
+                  className="w-full py-3 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-xs shadow-md transition-all mt-4 cursor-pointer"
                 >
-                  Create Creator Account
+                  Create Account
                 </button>
               </form>
             )}
+
+            {/* Quick Demo Logins */}
+            <div className="pt-4 border-t border-white/10">
+              <span className="text-[11px] text-neutral-400 flex items-center gap-1 mb-2 font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-[#f4bb28]" /> Instant Demo Roles:
+              </span>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setAuthError(null);
+                    const { error } = await demoSignIn('admin');
+                    if (error) setAuthError(error.message);
+                    else showToast('Signed in as ADMIN');
+                  }}
+                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#d81395]/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  👑 Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setAuthError(null);
+                    const { error } = await demoSignIn('seller');
+                    if (error) setAuthError(error.message);
+                    else showToast('Signed in as SELLER');
+                  }}
+                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#f4bb28]/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  🎬 Seller
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setAuthError(null);
+                    const { error } = await demoSignIn('buyer');
+                    if (error) setAuthError(error.message);
+                    else showToast('Signed in as BUYER');
+                  }}
+                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  🎟️ Buyer
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
