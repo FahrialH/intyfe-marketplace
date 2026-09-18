@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { Layout } from './components/layout/Layout';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { RequireAdmin } from './components/ProtectedRoutes';
 
 import { Home } from './pages/Home';
@@ -27,61 +28,63 @@ import { NotFound } from './pages/NotFound';
 
 export const App: React.FC = () => {
   return (
-    <SolanaWalletProvider>
-      <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="shop" element={<Shop />} />
-                <Route path="product/:slug" element={<ProductDetail />} />
-                <Route path="stories" element={<Stories />} />
-                <Route path="story/:slug" element={<StoryDetail />} />
-                <Route path="news" element={<News />} />
-                <Route path="news/:slug" element={<NewsDetail />} />
-                <Route path="sellers" element={<StoreListing />} />
-                <Route path="store/:slug" element={<StoreDetail />} />
-                <Route path="cart" element={<Cart />} />
-                <Route path="checkout" element={<Checkout />} />
-                <Route path="account" element={<MyAccount />} />
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<SignUp />} />
+    <ErrorBoundary>
+      <SolanaWalletProvider>
+        <AuthProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="shop" element={<Shop />} />
+                  <Route path="product/:slug" element={<ProductDetail />} />
+                  <Route path="stories" element={<Stories />} />
+                  <Route path="story/:slug" element={<StoryDetail />} />
+                  <Route path="news" element={<News />} />
+                  <Route path="news/:slug" element={<NewsDetail />} />
+                  <Route path="sellers" element={<StoreListing />} />
+                  <Route path="store/:slug" element={<StoreDetail />} />
+                  <Route path="cart" element={<Cart />} />
+                  <Route path="checkout" element={<Checkout />} />
+                  <Route path="account" element={<MyAccount />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<SignUp />} />
 
-                {/* Admin Protected Routes */}
-                <Route
-                  path="admin/news"
-                  element={
-                    <RequireAdmin>
-                      <AdminNews />
-                    </RequireAdmin>
-                  }
-                />
-                <Route
-                  path="admin/news/new"
-                  element={
-                    <RequireAdmin>
-                      <AdminNewsEditor />
-                    </RequireAdmin>
-                  }
-                />
-                <Route
-                  path="admin/news/edit/:id"
-                  element={
-                    <RequireAdmin>
-                      <AdminNewsEditor />
-                    </RequireAdmin>
-                  }
-                />
+                  {/* Admin Protected Routes */}
+                  <Route
+                    path="admin/news"
+                    element={
+                      <RequireAdmin>
+                        <AdminNews />
+                      </RequireAdmin>
+                    }
+                  />
+                  <Route
+                    path="admin/news/new"
+                    element={
+                      <RequireAdmin>
+                        <AdminNewsEditor />
+                      </RequireAdmin>
+                    }
+                  />
+                  <Route
+                    path="admin/news/edit/:id"
+                    element={
+                      <RequireAdmin>
+                        <AdminNewsEditor />
+                      </RequireAdmin>
+                    }
+                  />
 
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
-      </AuthProvider>
-    </SolanaWalletProvider>
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </AuthProvider>
+      </SolanaWalletProvider>
+    </ErrorBoundary>
   );
 };
 

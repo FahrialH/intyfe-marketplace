@@ -164,7 +164,10 @@ export const Checkout: React.FC = () => {
   };
 
   if (orderComplete) {
-    const explorerUrl = `https://explorer.solana.com/tx/${txSignature}?cluster=devnet`;
+    const network = import.meta.env.VITE_SOLANA_NETWORK || 'devnet';
+    const clusterParam = network === 'mainnet-beta' ? '' : `?cluster=${network}`;
+    const explorerUrl = `https://explorer.solana.com/tx/${txSignature}${clusterParam}`;
+    const networkLabel = network === 'mainnet-beta' ? 'Mainnet' : 'Devnet';
 
     return (
       <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[700px] text-center">
@@ -174,7 +177,7 @@ export const Checkout: React.FC = () => {
           </div>
 
           <span className="text-xs uppercase font-mono tracking-widest text-[#f4bb28] block">
-            SOLANA DEVNET TRANSACTION CONFIRMED
+            SOLANA {networkLabel.toUpperCase()} TRANSACTION CONFIRMED
           </span>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
@@ -195,7 +198,7 @@ export const Checkout: React.FC = () => {
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 text-[11px] text-[#d81395] hover:underline pt-1"
               >
-                <span>View on Solana Explorer (Devnet)</span>
+                <span>View on Solana Explorer ({networkLabel})</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             )}
