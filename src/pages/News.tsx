@@ -1,45 +1,23 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Newspaper, ChevronRight, Bell, Loader2 } from 'lucide-react';
+import { Search, Newspaper, ChevronRight, Bell } from 'lucide-react';
+import { mockNews } from '../data/mockData';
 import { NewsCard } from '../components/features/NewsCard';
 import { useCart } from '../context/CartContext';
-import { getNewsArticles } from '../services/newsService';
-import { NewsArticle } from '../types';
 
 export const News: React.FC = () => {
-  const [articles, setArticles] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [subscriberEmail, setSubscriberEmail] = useState('');
   const { showToast } = useCart();
 
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      setLoading(true);
-      try {
-        const data = await getNewsArticles();
-        if (active) setArticles(data);
-      } catch (err) {
-        console.error('Failed to load news dispatches:', err);
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-    load();
-    return () => {
-      active = false;
-    };
+  const categories = useMemo(() => {
+    const cats = new Set(mockNews.map((n) => n.category));
+    return ['All', ...Array.from(cats)];
   }, []);
 
-  const categories = useMemo(() => {
-    const cats = new Set(articles.map((n) => n.category));
-    return ['All', ...Array.from(cats)];
-  }, [articles]);
-
   const filteredNews = useMemo(() => {
-    return articles.filter((article) => {
+    return mockNews.filter((article) => {
       const matchesCat = selectedCategory === 'All' || article.category === selectedCategory;
       const matchesSearch =
         article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -48,7 +26,7 @@ export const News: React.FC = () => {
         article.author.name.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCat && matchesSearch;
     });
-  }, [articles, searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory]);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,13 +93,8 @@ export const News: React.FC = () => {
         ))}
       </div>
 
-      {/* Loading state */}
-      {loading ? (
-        <div className="py-24 text-center space-y-3">
-          <Loader2 className="w-8 h-8 text-[#d81395] animate-spin mx-auto" />
-          <p className="text-xs text-neutral-400">Loading dispatches...</p>
-        </div>
-      ) : filteredNews.length > 0 ? (
+      {/* News Grid */}
+      {filteredNews.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {filteredNews.map((article, idx) => (
             <NewsCard
