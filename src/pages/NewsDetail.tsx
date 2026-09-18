@@ -1,77 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronRight, Calendar, Clock, Share2, ArrowLeft, Tag, Loader2 } from 'lucide-react';
+import { ChevronRight, Calendar, Clock, Share2, ArrowLeft, Tag } from 'lucide-react';
+import { mockNews } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import { NewsCard } from '../components/features/NewsCard';
-import { getNewsArticleBySlug, getNewsArticles } from '../services/newsService';
-import { NewsArticle } from '../types';
 
 export const NewsDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { showToast } = useCart();
 
-  const [article, setArticle] = useState<NewsArticle | null>(null);
-  const [relatedArticles, setRelatedArticles] = useState<NewsArticle[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let active = true;
-    const fetchArticle = async () => {
-      if (!slug) return;
-      setLoading(true);
-      try {
-        const found = await getNewsArticleBySlug(slug);
-        const all = await getNewsArticles();
-        if (active) {
-          setArticle(found);
-          setRelatedArticles(all.filter((a) => a.slug !== slug).slice(0, 2));
-        }
-      } catch (err) {
-        console.error('Failed to load article detail:', err);
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-
-    fetchArticle();
-    return () => {
-      active = false;
-    };
-  }, [slug]);
+  const article = mockNews.find((n) => n.slug === slug) || mockNews[0];
+  const relatedArticles = mockNews.filter((n) => n.id !== article.id);
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     showToast('Dispatch link copied to clipboard!');
   };
-
-  if (loading) {
-    return (
-      <div className="py-24 text-center space-y-3">
-        <Loader2 className="w-8 h-8 text-[#d81395] animate-spin mx-auto" />
-        <p className="text-xs text-neutral-400">Loading dispatch...</p>
-      </div>
-    );
-  }
-
-  if (!article) {
-    return (
-      <div className="pt-12 pb-24 container mx-auto px-4 max-w-lg text-center">
-        <div className="bg-[#151515] border border-white/10 rounded-3xl p-8 space-y-4">
-          <h2 className="text-2xl font-bold text-white">Article Not Found</h2>
-          <p className="text-xs text-neutral-400">
-            The requested dispatch could not be located on the Intyfe network.
-          </p>
-          <button
-            onClick={() => navigate('/news')}
-            className="px-5 py-2.5 rounded-full bg-[#d81395] text-white text-xs font-semibold"
-          >
-            Back to All Dispatches
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[900px]">
@@ -91,7 +36,7 @@ export const NewsDetail: React.FC = () => {
       {/* Back button */}
       <button
         onClick={() => navigate('/news')}
-        className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-white mb-6 transition-colors cursor-pointer"
+        className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-white mb-6 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back to all updates</span>
@@ -142,7 +87,7 @@ export const NewsDetail: React.FC = () => {
 
           <button
             onClick={handleShare}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-neutral-300 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-neutral-300 hover:text-white transition-colors"
             title="Share article"
           >
             <Share2 className="w-3.5 h-3.5" />
@@ -242,7 +187,7 @@ export const NewsDetail: React.FC = () => {
               to="/news"
               className="text-xs font-semibold text-[#f4bb28] hover:text-white transition-colors"
             >
-              View all &rarr;
+              View all →
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

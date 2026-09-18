@@ -1,9 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { X, ShoppingBag, User, Film, Compass, Store, Newspaper, Shield } from 'lucide-react';
+import { X, ShoppingBag, User, Film, Compass, Store, Newspaper } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
-import { SolanaWalletButton } from '../features/SolanaWalletButton';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -11,8 +9,7 @@ interface MobileDrawerProps {
 }
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) => {
-  const { itemCount } = useCart();
-  const { user, profile, isAdmin, signOut } = useAuth();
+  const { itemCount, wallet } = useCart();
 
   if (!isOpen) return null;
 
@@ -117,47 +114,37 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
         </div>
 
         <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
-          <SolanaWalletButton isMobile={true} showBadge={true} />
-
-          {isAdmin && (
-            <NavLink
-              to="/admin/news"
-              onClick={onClose}
-              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-semibold bg-[#d81395]/20 border border-[#d81395]/50 text-[#d81395] hover:bg-[#d81395]/30 transition-colors"
-            >
-              <Shield className="w-3.5 h-3.5" /> Admin News CMS
-            </NavLink>
-          )}
-
-          {user ? (
-            <div className="flex items-center gap-2">
-              <NavLink
-                to="/account"
-                onClick={onClose}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-medium border border-white/20 text-white hover:bg-white/10 transition-colors truncate"
-              >
-                <User className="w-3.5 h-3.5 text-[#f4bb28]" />
-                <span className="truncate">{profile?.full_name || 'Account'}</span>
-              </NavLink>
+          {wallet.connected ? (
+            <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-[#f4bb28]/30">
+              <span className="text-xs font-mono text-neutral-300">
+                {wallet.address?.slice(0, 6)}...{wallet.address?.slice(-4)}
+              </span>
               <button
-                onClick={() => {
-                  signOut();
-                  onClose();
-                }}
-                className="py-2.5 px-3 rounded-full text-xs text-rose-400 border border-white/10 hover:bg-rose-500/10 transition-colors"
+                onClick={wallet.disconnect}
+                className="text-xs text-rose-400 hover:underline"
               >
-                Exit
+                Disconnect
               </button>
             </div>
           ) : (
-            <NavLink
-              to="/login"
-              onClick={onClose}
-              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-semibold bg-[#d81395] text-white hover:bg-[#9a106a] transition-colors"
+            <button
+              onClick={() => {
+                wallet.connect();
+                onClose();
+              }}
+              className="w-full py-2.5 px-4 rounded-full text-xs font-bold text-black bg-[#f4bb28] hover:bg-[#e3ae24] transition-colors text-center"
             >
-              <User className="w-3.5 h-3.5" /> Sign in
-            </NavLink>
+              Connect Wallet
+            </button>
           )}
+
+          <NavLink
+            to="/account"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-medium border border-white/20 text-white hover:bg-white/10 transition-colors"
+          >
+            <User className="w-3.5 h-3.5" /> My Account
+          </NavLink>
         </div>
       </div>
     </div>

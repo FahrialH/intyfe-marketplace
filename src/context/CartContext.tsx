@@ -1,6 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, CartItem } from '../types';
 
 interface CartContextType {
@@ -16,9 +14,7 @@ interface CartContextType {
   showToast: (msg: string) => void;
   wallet: {
     connected: boolean;
-    connecting: boolean;
     address: string | null;
-    network: string;
     connect: () => void;
     disconnect: () => void;
   };
@@ -27,9 +23,6 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { connected, connecting, publicKey, disconnect, wallet: activeWallet } = useWallet();
-  const { setVisible } = useWalletModal();
-
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('intyfe_cart');
@@ -40,6 +33,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [walletConnected, setWalletConnected] = useState<boolean>(() => {
+    return localStorage.getItem('intyfe_wallet') === 'true';
+  });
+  const [walletAddress, setWalletAddress] = useState<string | null>(() => {
+    return localStorage.getItem('intyfe_wallet_addr') || null;
+  });
 
   useEffect(() => {
     localStorage.setItem('intyfe_cart', JSON.stringify(cartItems));
@@ -88,29 +87,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCartItems([]);
   };
 
-  const prevConnectedRef = useRef(connected);
-  useEffect(() => {
-    if (!prevConnectedRef.current && connected && publicKey) {
-      const addr = publicKey.toBase58();
-      showToast(`Connected ${activeWallet?.adapter.name || 'Solana Wallet'} (${addr.slice(0, 4)}...${addr.slice(-4)}) on Devnet`);
-    }
-    prevConnectedRef.current = connected;
-  }, [connected, publicKey, activeWallet]);
-
   const connectWallet = () => {
-    setVisible(true);
+    const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
+    setWalletConnected(true);
+    setWalletAddress(mockAddress);
+    localStorage.setItem('intyfe_wallet', 'true');
+    localStorage.setItem('intyfe_wallet_addr', mockAddress);
+    showToast('Web3 Wallet connected: 0x742d...f44e');
   };
 
-  const disconnectWallet = async () => {
-    try {
-      await disconnect();
-      showToast('Solana wallet disconnected.');
-    } catch (err) {
-      console.error('Failed to disconnect Solana wallet:', err);
-    }
+  const disconnectWallet = () => {
+    setWalletConnected(false);
+    setWalletAddress(null);
+    localStorage.removeItem('intyfe_wallet');
+    localStorage.removeItem('intyfe_wallet_addr');
+    showToast('Wallet disconnected.');
   };
-
-  const walletAddress = publicKey ? publicKey.toBase58() : null;
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
@@ -130,10 +122,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         toastMessage,
         showToast,
         wallet: {
-          connected,
-          connecting,
+          connected: walletConnected,
           address: walletAddress,
-          network: 'Devnet',
           connect: connectWallet,
           disconnect: disconnectWallet,
         },
