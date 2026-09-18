@@ -149,7 +149,7 @@ export const getNewsRecordById = async (id: string): Promise<NewsArticleRecord |
 export const saveNewsArticle = async (
   article: Partial<NewsArticleRecord>,
   existingId?: string
-): Promise<{ data: NewsArticleRecord | null; error: Error | null }> => {
+): Promise<{ data: NewsArticleRecord | null; error: Error | null; warning?: string }> => {
   if (!isSupabaseConfigured()) {
     // Mock save in demo mode
     const record: NewsArticleRecord = {
@@ -173,31 +173,80 @@ export const saveNewsArticle = async (
     return { data: record, error: null };
   }
 
-  try {
-    if (existingId) {
-      const { data, error } = await supabase
-        .from('news_articles')
-        .update(article)
-        .eq('id', existingId)
-        .select()
-        .single();
+  const payload: Record<string, unknown> = { ...article };
+  const omittedColumns: string[] = [];
 
-      if (error) return { data: null, error: new Error(error.message) };
-      return { data: data as NewsArticleRecord, error: null };
-    } else {
-      const { data, error } = await supabase
-        .from('news_articles')
-        .insert(article)
-        .select()
-        .single();
+  // Up to 5 retries to dynamically prune any columns missing from the Supabase schema cache
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      if (existingId) {
+        const { data, error } = await supabase
+          .from('news_articles')
+          .update(payload)
+          .eq('id', existingId)
+          .select()
+          .single();
 
-      if (error) return { data: null, error: new Error(error.message) };
-      return { data: data as NewsArticleRecord, error: null };
+        if (error) {
+          // Detect schema cache / column not found error (PGRST204 or PostgreSQL 42703)
+          const match =
+            error.message.match(/Could not find the '([^']+)' column/i) ||
+            error.message.match(/column [^\s.]+\.([^\s]+) does not exist/i);
+
+          if (match && match[1] && match[1] in payload) {
+            const missingCol = match[1];
+            console.warn(`[newsService] Column '${missingCol}' not found in Supabase schema cache. Retrying without it.`);
+            omittedColumns.push(missingCol);
+            delete payload[missingCol];
+            continue;
+          }
+          return { data: null, error: new Error(error.message) };
+        }
+
+        const warning = omittedColumns.length > 0
+          ? `Article updated! Note: column(s) [${omittedColumns.join(', ')}] are not in your database yet. Run migration_fix_schema_cache.sql in Supabase SQL Editor.`
+          : undefined;
+
+        return { data: data as NewsArticleRecord, error: null, warning };
+      } else {
+        const { data, error } = await supabase
+          .from('news_articles')
+          .insert(payload)
+          .select()
+          .single();
+
+        if (error) {
+          // Detect schema cache / column not found error (PGRST204 or PostgreSQL 42703)
+          const match =
+            error.message.match(/Could not find the '([^']+)' column/i) ||
+            error.message.match(/column [^\s.]+\.([^\s]+) does not exist/i);
+
+          if (match && match[1] && match[1] in payload) {
+            const missingCol = match[1];
+            console.warn(`[newsService] Column '${missingCol}' not found in Supabase schema cache. Retrying without it.`);
+            omittedColumns.push(missingCol);
+            delete payload[missingCol];
+            continue;
+          }
+          return { data: null, error: new Error(error.message) };
+        }
+
+        const warning = omittedColumns.length > 0
+          ? `Article published! Note: column(s) [${omittedColumns.join(', ')}] are not in your database yet. Run migration_fix_schema_cache.sql in Supabase SQL Editor.`
+          : undefined;
+
+        return { data: data as NewsArticleRecord, error: null, warning };
+      }
+    } catch (err: unknown) {
+      const error = err instanceof Error ? err : new Error('Failed to save article');
+      return { data: null, error };
     }
-  } catch (err: unknown) {
-    const error = err instanceof Error ? err : new Error('Failed to save article');
-    return { data: null, error };
   }
+
+  return {
+    data: null,
+    error: new Error('Failed to save article due to repeated schema cache mismatches.'),
+  };
 };
 
 export const deleteNewsArticle = async (id: string): Promise<{ success: boolean; error?: string }> => {

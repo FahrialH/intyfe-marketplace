@@ -81,6 +81,20 @@ CREATE TABLE IF NOT EXISTS public.order_items (
   price_sol NUMERIC(10, 4) NOT NULL
 );
 
+-- Ensure all columns exist even if tables were previously created with older schema
+ALTER TABLE public.news_articles 
+  ADD COLUMN IF NOT EXISTS author_name TEXT,
+  ADD COLUMN IF NOT EXISTS author_avatar TEXT,
+  ADD COLUMN IF NOT EXISTS author_role TEXT,
+  ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
+
+ALTER TABLE public.products 
+  ADD COLUMN IF NOT EXISTS attributes JSONB DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
+
+ALTER TABLE public.orders 
+  ADD COLUMN IF NOT EXISTS billing_details JSONB DEFAULT '{}'::jsonb;
+
 -- 6. Trigger to Auto-create Profile on Sign-up (Safe with explicit search_path & exception guard)
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER
@@ -285,3 +299,6 @@ CREATE POLICY "Admin delete article-images" ON storage.objects
     bucket_id = 'article-images' AND
     (public.get_auth_role() = 'admin' OR auth.role() = 'authenticated')
   );
+
+-- Reload PostgREST schema cache
+NOTIFY pgrst, 'reload schema';

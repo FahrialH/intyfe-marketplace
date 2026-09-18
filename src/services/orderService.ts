@@ -32,18 +32,33 @@ export const createOrderWithItems = async (
 
   try {
     // 1. Insert into orders table
-    const { data: orderData, error: orderError } = await supabase
+    const orderPayload: Record<string, unknown> = {
+      buyer_id: buyerId || null,
+      solana_tx_signature: solanaTxSignature,
+      total_price_sol: totalPriceSol,
+      status: 'pending',
+      wallet_address: walletAddress,
+      billing_details: billingDetails,
+    };
+
+    let { data: orderData, error: orderError } = await supabase
       .from('orders')
-      .insert({
-        buyer_id: buyerId || null,
-        solana_tx_signature: solanaTxSignature,
-        total_price_sol: totalPriceSol,
-        status: 'pending',
-        wallet_address: walletAddress,
-        billing_details: billingDetails,
-      })
+      .insert(orderPayload)
       .select()
       .single();
+
+    // Fallback if billing_details column is not yet present in Supabase table
+    if (orderError && (orderError.message.includes('billing_details') || orderError.message.includes('schema cache'))) {
+      console.warn('[orderService] Column billing_details not found in schema cache. Retrying order insert without it.');
+      delete orderPayload.billing_details;
+      const retryResult = await supabase
+        .from('orders')
+        .insert(orderPayload)
+        .select()
+        .single();
+      orderData = retryResult.data;
+      orderError = retryResult.error;
+    }
 
     if (orderError || !orderData) {
       return { order: null, error: new Error(orderError?.message || 'Failed to create order') };

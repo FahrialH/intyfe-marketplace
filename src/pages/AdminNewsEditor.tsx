@@ -124,19 +124,24 @@ export const AdminNewsEditor: React.FC = () => {
       tags: tagList,
       author_id: user?.id || null,
       author_name: formData.author_name || 'Intyfe Editorial',
+      author_avatar: profile?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
       author_role: formData.author_role || 'Staff Dispatch',
       published_at: new Date().toISOString(),
     };
 
     try {
-      const { error } = await saveNewsArticle(payload, id);
+      const { error, warning } = await saveNewsArticle(payload, id);
       if (error) {
         setErrorMsg(error.message);
         setSaving(false);
         return;
       }
 
-      showToast(isEditMode ? 'Article successfully updated!' : 'New article published!');
+      if (warning) {
+        showToast(warning);
+      } else {
+        showToast(isEditMode ? 'Article successfully updated!' : 'New article published!');
+      }
       navigate('/admin/news');
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to save article';
