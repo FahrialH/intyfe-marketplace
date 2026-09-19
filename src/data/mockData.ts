@@ -51,7 +51,8 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/deziqettd-e.jpg',
     readingTimeMinutes: 12,
     pagesCount: 118,
-    mintPriceEth: 0.012,
+    mintPriceSol: 0.25,
+    mintPriceEth: 0.25,
     mintPriceUsd: 42,
     editionTotal: 100,
     editionMinted: 74,
@@ -92,7 +93,8 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/rdaxhyjjc1o-1024x683.jpg',
     readingTimeMinutes: 18,
     pagesCount: 94,
-    mintPriceEth: 0.03,
+    mintPriceSol: 0.65,
+    mintPriceEth: 0.65,
     mintPriceUsd: 105,
     editionTotal: 250,
     editionMinted: 189,
@@ -129,7 +131,8 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/rkixtzpoq28.jpg',
     readingTimeMinutes: 15,
     pagesCount: 110,
-    mintPriceEth: 0.02,
+    mintPriceSol: 0.45,
+    mintPriceEth: 0.45,
     mintPriceUsd: 70,
     editionTotal: 150,
     editionMinted: 142,
@@ -164,7 +167,8 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/otxjhyjbkeg-1024x683.jpg',
     readingTimeMinutes: 22,
     pagesCount: 135,
-    mintPriceEth: 0.025,
+    mintPriceSol: 0.55,
+    mintPriceEth: 0.55,
     mintPriceUsd: 87,
     editionTotal: 300,
     editionMinted: 215,
@@ -190,7 +194,8 @@ export const mockProducts: Product[] = [
     title: 'Action 01 - Executive Script Tier',
     description: 'Original shooting screenplay package for Action 01. Includes full director script PDF, character bible, storyboard animatic pass, and 1 community producer vote.',
     price: 3000000,
-    priceEth: 0.012,
+    priceSol: 0.25,
+    priceEth: 0.25,
     category: 'Action / Thriller',
     rating: 5.0,
     reviewsCount: 18,
@@ -202,14 +207,14 @@ export const mockProducts: Product[] = [
     ],
     inStock: true,
     tier: 'Director',
-    tokenContract: '0x71C...438F',
+    tokenContract: '9WzDX...AWWM',
     attributes: [
       { trait: 'Edition', value: '1 of 100' },
       { trait: 'Screenplay Pages', value: '118' },
       { trait: 'Royalty Share', value: '0.5%' },
       { trait: 'DAO Access', value: 'Yes' },
     ],
-    tags: ['Script NFT', 'Action', 'Exclusive'],
+    tags: ['Script Pass', 'Action', 'Exclusive'],
   },
   {
     id: 'prod-2',
@@ -217,7 +222,8 @@ export const mockProducts: Product[] = [
     title: 'Movie Horror 01 - First Edition',
     description: 'Chilling psychological horror manuscript with signed digital concept art and exclusive access to the virtual writers room read-through sessions.',
     price: 3000000,
-    priceEth: 0.012,
+    priceSol: 0.25,
+    priceEth: 0.25,
     category: 'Horror / Sci-Fi',
     rating: 4.8,
     reviewsCount: 12,
@@ -228,7 +234,7 @@ export const mockProducts: Product[] = [
     ],
     inStock: true,
     tier: 'Standard',
-    tokenContract: '0x32A...899B',
+    tokenContract: '32ASo...899B',
     attributes: [
       { trait: 'Edition', value: '1 of 150' },
       { trait: 'Format', value: 'Final Draft .fdx + PDF' },
@@ -242,7 +248,8 @@ export const mockProducts: Product[] = [
     title: 'Protocol Genesis Collector Pass',
     description: 'The definitive cryptographic access token granting holder status as executive patron of the Protocol Genesis cinematic franchise.',
     price: 7500000,
-    priceEth: 0.03,
+    priceSol: 0.65,
+    priceEth: 0.65,
     originalPrice: 9000000,
     category: 'Sci-Fi Franchise',
     rating: 5.0,
@@ -254,7 +261,7 @@ export const mockProducts: Product[] = [
     ],
     inStock: true,
     tier: 'Producer',
-    tokenContract: '0x94D...112C',
+    tokenContract: '94DSo...112C',
     attributes: [
       { trait: 'Edition', value: '1 of 50' },
       { trait: 'Film Credit', value: 'Associate Producer' },
@@ -268,7 +275,8 @@ export const mockProducts: Product[] = [
     title: 'Intyfe Official Studio Heavyweight Hoodie',
     description: 'Custom embroidered French Terry cotton hoodie with woven blockchain identity QR patch linking to verified owner portfolio on-chain.',
     price: 1250000,
-    priceEth: 0.005,
+    priceSol: 0.10,
+    priceEth: 0.10,
     category: 'Official Merchandise',
     rating: 4.9,
     reviewsCount: 45,
@@ -292,7 +300,8 @@ export const mockProducts: Product[] = [
     title: 'Anamorphic LUTs & Soundscape Pack',
     description: 'Master film grading color look-up tables and 96kHz lossless environmental audio ambiances recorded on vintage 35mm equipment.',
     price: 1800000,
-    priceEth: 0.007,
+    priceSol: 0.15,
+    priceEth: 0.15,
     category: 'Creator Assets',
     rating: 4.7,
     reviewsCount: 29,
@@ -315,7 +324,8 @@ export const mockProducts: Product[] = [
     title: 'Mars Rising - Extended Spec Script',
     description: 'Full 135-page spec script exploring political schisms between the orbital stations and red surface colonies.',
     price: 4500000,
-    priceEth: 0.018,
+    priceSol: 0.38,
+    priceEth: 0.38,
     category: 'Sci-Fi Franchise',
     rating: 5.0,
     reviewsCount: 16,
@@ -346,7 +356,8 @@ export const mockStudios: Studio[] = [
     foundedYear: 2023,
     location: 'Serang, Banten, Indonesia',
     totalStories: 6,
-    totalVolumeEth: 184.5,
+    totalVolumeSol: 2840.5,
+    totalVolumeEth: 2840.5,
     productsCount: 8,
     socials: {
       twitter: 'https://twitter.com/intyfe',
@@ -366,7 +377,8 @@ export const mockStudios: Studio[] = [
     foundedYear: 2024,
     location: 'Jakarta Digital Cinema Center, Indonesia',
     totalStories: 4,
-    totalVolumeEth: 96.2,
+    totalVolumeSol: 1490.2,
+    totalVolumeEth: 1490.2,
     productsCount: 5,
     socials: {
       twitter: 'https://twitter.com/intyfe',
@@ -379,23 +391,23 @@ export const mockNews: NewsArticle[] = [
   {
     id: 'news-1',
     slug: 'intyfe-protocol-v2-mainnet-launch',
-    title: 'Intyfe Protocol v2 Launches on Ethereum L2 with Zero-Gas Script Minting',
-    excerpt: 'Our major protocol upgrade introduces instant fractional ownership passes, zero-gas script timestamps, and automated secondary royalty splits for writing teams.',
-    content: `Today marks a pivotal milestone for decentralized film production. We are thrilled to announce that Intyfe Protocol v2 is officially live on Ethereum Layer 2 rollup networks.
+    title: 'Intyfe Protocol v2 Launches on Solana Mainnet with Instant Script Minting',
+    excerpt: 'Our major protocol upgrade introduces instant fractional ownership passes, zero-latency script timestamps, and automated secondary royalty splits on Solana Mainnet.',
+    content: `Today marks a pivotal milestone for decentralized film production. We are thrilled to announce that Intyfe Protocol v2 is officially live on Solana Mainnet.
 
 ### What Changes in v2?
 
-Traditional filmmaking has long required creators to surrender their intellectual property rights early in development in exchange for fractional advance checks. With Intyfe v2, screenwriters retain autonomous cryptographic ownership of their manuscripts from the very first draft.
+Traditional filmmaking has long required creators to surrender their intellectual property rights early in development in exchange for fractional advance checks. With Intyfe v2 on Solana, screenwriters retain autonomous cryptographic ownership of their manuscripts from the very first draft.
 
 Key highlights of the v2 protocol upgrade include:
 
-* **Zero-Gas Relayer Infrastructure**: Minting registered script drafts and casting passes no longer burdens indie writers with volatile gas fees. All standard transaction fees are sponsored through our decentralized sequencer relayer pool.
-* **Instant Dynamic Royalty Splits**: Collaborative writing duos and studios can set granular automated revenue-sharing splits directly on-chain. When a studio or producer purchases an option pass, funds are distributed concurrently to all verified wallets.
-* **Snapshot Protocol v2 Governance**: Passes now carry weighted governance voting privileges natively compatible with decentralized autonomous organizations (DAOs). Token holders can vote on production milestones, location scouting, and premiere schedules.
+* **High-Speed Low-Fee Infrastructure**: Minting registered script drafts and passes on Solana Mainnet happens in milliseconds with fractions of a cent in fees.
+* **Instant Dynamic Royalty Splits**: Collaborative writing duos and studios can set granular automated revenue-sharing splits directly on-chain in SOL. When a studio or producer purchases an option pass, funds are distributed concurrently to all verified wallets.
+* **Solana Governance Integration**: Passes carry weighted governance voting privileges natively compatible with decentralized autonomous organizations (DAOs). Token holders can vote on production milestones, location scouting, and premiere schedules.
 
 ### How to Get Started
 
-Creators can immediately navigate to their **Creator Studio Dashboard** to register their latest FDX, PDF, or Markdown screenplays. Passes are immediately minted with verifiable cryptographic timestamps visible on the public explorer.`,
+Creators can immediately navigate to their **Creator Studio Dashboard** to register their latest FDX, PDF, or Markdown screenplays. Passes are immediately minted with verifiable cryptographic timestamps on the Solana blockchain.`,
     image: '/assets/images/dhd4xzs3uk-1024x575.jpg',
     category: 'Protocol Updates',
     publishedAt: 'September 12, 2026',
@@ -405,7 +417,7 @@ Creators can immediately navigate to their **Creator Studio Dashboard** to regis
       avatar: '/assets/images/cropped-image-180x180.png',
       role: 'Core Contributors',
     },
-    tags: ['Ethereum L2', 'Rollups', 'Smart Contracts', 'Creator Royalties'],
+    tags: ['Solana Mainnet', 'Smart Contracts', 'Creator Royalties', 'Web3 Cinema'],
     featured: true,
   },
   {

@@ -50,10 +50,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="font-bold text-white text-base">
-              {formattedPrice}
+              {product.priceSol ?? product.priceEth} SOL
             </span>
             <span className="text-xs text-neutral-400">
-              ({product.priceEth} ETH)
+              ({formattedPrice})
             </span>
           </div>
         </div>

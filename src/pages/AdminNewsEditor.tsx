@@ -201,7 +201,7 @@ export const AdminNewsEditor: React.FC = () => {
                 required
                 value={formData.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="e.g. Intyfe Protocol V2 Live On Solana Devnet"
+                placeholder="e.g. Intyfe Protocol V2 Live On Solana Mainnet"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#d81395]"
               />
             </div>

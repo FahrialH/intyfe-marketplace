@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Lock, Mail, ChevronRight, AlertCircle, Loader2, Sparkles, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, ChevronRight, AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { isSupabaseConfigured } from '../lib/supabase';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn, demoSignIn } = useAuth();
+  const { signIn } = useAuth();
   const { showToast } = useCart();
 
   const [email, setEmail] = useState('');
@@ -36,26 +35,6 @@ export const Login: React.FC = () => {
       navigate(from, { replace: true });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'An unexpected error occurred.';
-      setErrorMsg(msg);
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleQuickDemoLogin = async (demoRole: 'admin' | 'seller' | 'buyer') => {
-    setErrorMsg(null);
-    setIsSubmitting(true);
-
-    try {
-      const { error } = await demoSignIn(demoRole);
-      if (error && isSupabaseConfigured()) {
-        setErrorMsg(error.message);
-        setIsSubmitting(false);
-        return;
-      }
-      showToast(`Signed in as ${demoRole.toUpperCase()}`);
-      navigate(demoRole === 'admin' ? '/admin/news' : from, { replace: true });
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error in demo login';
       setErrorMsg(msg);
       setIsSubmitting(false);
     }
@@ -152,40 +131,6 @@ export const Login: React.FC = () => {
             )}
           </button>
         </form>
-
-        {/* Demo Fast Logins for Testing */}
-        <div className="pt-4 border-t border-white/10 space-y-3">
-          <div className="flex items-center justify-between text-[11px] text-neutral-400">
-            <span className="flex items-center gap-1 font-semibold text-neutral-300">
-              <Sparkles className="w-3.5 h-3.5 text-[#f4bb28]" /> Quick Demo Roles:
-            </span>
-            <span>Instant Role Simulation</span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('admin')}
-              className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#d81395]/20 border border-white/10 hover:border-[#d81395] text-[11px] text-neutral-300 hover:text-white transition-all text-center"
-            >
-              👑 Admin
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('seller')}
-              className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#f4bb28]/20 border border-white/10 hover:border-[#f4bb28] text-[11px] text-neutral-300 hover:text-white transition-all text-center"
-            >
-              🎬 Seller
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('buyer')}
-              className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 hover:border-emerald-500 text-[11px] text-neutral-300 hover:text-white transition-all text-center"
-            >
-              🎟️ Buyer
-            </button>
-          </div>
-        </div>
 
         <div className="text-center pt-2">
           <p className="text-xs text-neutral-400">

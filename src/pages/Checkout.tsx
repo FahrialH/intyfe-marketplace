@@ -6,22 +6,27 @@ import { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { createOrderWithItems } from '../services/orderService';
+import { connectWalletDirectly, getSolanaExplorerUrl } from '../utils/walletDetection';
 
 export const Checkout: React.FC = () => {
-  const { cartItems, subtotal, subtotalEth, clearCart, showToast } = useCart();
-  const { user } = useAuth();
+  const { cartItems, subtotal, subtotalSol, clearCart, showToast } = useCart();
+  const { user, profile } = useAuth();
   const { connection } = useConnection();
   const { publicKey, sendTransaction, connected, select, wallets } = useWallet();
 
+  const rawNetwork = import.meta.env.VITE_SOLANA_NETWORK || 'mainnet-beta';
+  const isMainnet = rawNetwork === 'mainnet-beta' || rawNetwork === 'mainnet';
+  const networkLabel = isMainnet ? 'Mainnet' : 'Devnet';
+
   const [paymentMethod, setPaymentMethod] = useState<'solana' | 'card'>('solana');
   const [formData, setFormData] = useState({
-    firstName: 'Alex',
-    lastName: 'Vance',
-    email: user?.email || 'alex.vance@cinephile.io',
-    address: 'Jl. Sudirman No. 45',
-    city: 'Jakarta Selatan',
+    firstName: profile?.full_name?.split(' ')[0] || user?.user_metadata?.full_name?.split(' ')[0] || '',
+    lastName: profile?.full_name?.split(' ').slice(1).join(' ') || user?.user_metadata?.full_name?.split(' ').slice(1).join(' ') || '',
+    email: user?.email || '',
+    address: '',
+    city: '',
     country: 'Indonesia',
-    postalCode: '12190',
+    postalCode: '',
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -29,8 +34,8 @@ export const Checkout: React.FC = () => {
   const [orderComplete, setOrderComplete] = useState(false);
   const [txSignature, setTxSignature] = useState('');
 
-  // Conversion: 1 ETH subtotal ~= 15 SOL (or minimum 0.01 SOL on Devnet)
-  const totalSol = Math.max(0.01, Number((subtotalEth * 15).toFixed(4)));
+  // Mainnet SOL total calculated directly from cart items
+  const totalSol = Number((subtotalSol ?? 0).toFixed(4));
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -84,7 +89,7 @@ export const Checkout: React.FC = () => {
     }
 
     try {
-      setStatusMessage('Preparing Solana Devnet transfer...');
+      setStatusMessage(`Preparing Solana ${networkLabel} transfer...`);
       const treasuryPubkeyStr = import.meta.env.VITE_SOLANA_TREASURY_WALLET || '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM';
       const treasuryPubkey = new PublicKey(treasuryPubkeyStr);
 
@@ -102,7 +107,7 @@ export const Checkout: React.FC = () => {
       const signature = await sendTransaction(transaction, connection);
       setTxSignature(signature);
 
-      setStatusMessage('Confirming transaction on Solana Devnet...');
+      setStatusMessage(`Confirming transaction on Solana ${networkLabel}...`);
       const latestBlockHash = await connection.getLatestBlockhash();
       await connection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
@@ -136,38 +141,8 @@ export const Checkout: React.FC = () => {
     }
   };
 
-  const handleSimulateSolanaPayment = async () => {
-    setIsProcessing(true);
-    setErrorMsg(null);
-    setStatusMessage('Simulating Solana Devnet confirmation...');
-
-    const simulatedSig = Array.from({ length: 88 }, () =>
-      '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[Math.floor(Math.random() * 58)]
-    ).join('');
-
-    setTimeout(async () => {
-      setTxSignature(simulatedSig);
-      await createOrderWithItems({
-        buyerId: user?.id,
-        solanaTxSignature: simulatedSig,
-        totalPriceSol: totalSol,
-        walletAddress: publicKey?.toBase58() || '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM',
-        billingDetails: formData,
-        items: cartItems,
-      });
-
-      setIsProcessing(false);
-      setOrderComplete(true);
-      clearCart();
-      showToast('Simulated Devnet order recorded in Supabase!');
-    }, 1200);
-  };
-
   if (orderComplete) {
-    const network = import.meta.env.VITE_SOLANA_NETWORK || 'devnet';
-    const clusterParam = network === 'mainnet-beta' ? '' : `?cluster=${network}`;
-    const explorerUrl = `https://explorer.solana.com/tx/${txSignature}${clusterParam}`;
-    const networkLabel = network === 'mainnet-beta' ? 'Mainnet' : 'Devnet';
+    const explorerUrl = getSolanaExplorerUrl('tx', txSignature, rawNetwork);
 
     return (
       <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[700px] text-center">
@@ -191,7 +166,7 @@ export const Checkout: React.FC = () => {
           <div className="bg-black/60 p-3.5 rounded-xl border border-white/10 text-xs font-mono text-[#f4bb28] break-all max-w-md mx-auto space-y-2">
             <div className="text-[11px] text-neutral-400">Signature Hash:</div>
             <div>{txSignature}</div>
-            {txSignature.length > 50 && (
+            {txSignature.length > 30 && (
               <a
                 href={explorerUrl}
                 target="_blank"
@@ -254,7 +229,7 @@ export const Checkout: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-white font-bold text-base">
                   <Wallet className="w-5 h-5 text-[#f4bb28]" />
-                  <span>Solana Wallet Integration (Devnet)</span>
+                  <span>Solana Wallet Integration ({networkLabel})</span>
                 </div>
                 {connected && (
                   <span className="text-[11px] bg-emerald-500/20 text-emerald-400 font-semibold px-2.5 py-0.5 rounded-full border border-emerald-500/30">
@@ -264,7 +239,7 @@ export const Checkout: React.FC = () => {
               </div>
 
               <p className="text-xs text-neutral-400">
-                Connect your Phantom or Solflare wallet on Solana Devnet to transfer SOL directly to the film collective treasury.
+                Connect your Phantom or Solflare wallet on Solana {networkLabel} to transfer SOL directly to the film collective treasury.
               </p>
 
               {connected && publicKey ? (
@@ -280,7 +255,7 @@ export const Checkout: React.FC = () => {
                       <button
                         key={w.adapter.name}
                         type="button"
-                        onClick={() => select(w.adapter.name)}
+                        onClick={() => connectWalletDirectly(w.adapter.name, select, wallets)}
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-all cursor-pointer"
                       >
                         <img src={w.adapter.icon} alt={w.adapter.name} className="w-4 h-4" />
@@ -398,7 +373,7 @@ export const Checkout: React.FC = () => {
                 >
                   <Wallet className="w-5 h-5 text-[#f4bb28]" />
                   <div>
-                    <span className="block text-xs font-bold text-white">Solana Devnet (SOL)</span>
+                    <span className="block text-xs font-bold text-white">Solana {networkLabel} (SOL)</span>
                     <span className="text-[11px] text-neutral-400">Phantom, Solflare, Web3 RPC</span>
                   </div>
                 </button>
@@ -438,32 +413,36 @@ export const Checkout: React.FC = () => {
                       </span>
                       <span className="text-neutral-400">Qty: {item.quantity}</span>
                     </div>
-                    <span className="font-mono text-white shrink-0">
-                      {formatCurrency(item.product.price * item.quantity)}
-                    </span>
+                    <div className="text-right shrink-0">
+                      <div className="font-mono font-bold text-white">
+                        {((item.product.priceSol ?? item.product.priceEth ?? 0) * item.quantity).toFixed(4)} SOL
+                      </div>
+                      <div className="text-[10px] text-neutral-400">
+                        {formatCurrency(item.product.price * item.quantity)}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
 
               <div className="space-y-3 pt-3 border-t border-white/10 text-xs sm:text-sm text-neutral-300">
                 <div className="flex justify-between">
-                  <span>Subtotal (IDR)</span>
-                  <span className="font-semibold text-white">{formatCurrency(subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Estimated SOL</span>
-                  <span className="font-mono text-[#f4bb28] font-bold">{totalSol} SOL</span>
+                  <span>Subtotal</span>
+                  <div className="text-right">
+                    <span className="font-mono font-bold text-white">{totalSol.toFixed(4)} SOL</span>
+                    <span className="block text-[11px] text-neutral-400">({formatCurrency(subtotal)})</span>
+                  </div>
                 </div>
                 <div className="flex justify-between">
                   <span>Gas & Network Fee</span>
-                  <span className="text-emerald-400 font-medium">~0.000005 SOL (Devnet)</span>
+                  <span className="text-emerald-400 font-mono text-xs">~0.000005 SOL ({networkLabel})</span>
                 </div>
                 <div className="flex justify-between pt-3 border-t border-white/10 font-bold text-base text-white">
                   <span>Total Due</span>
                   <div className="text-right">
-                    <div>{formatCurrency(subtotal)}</div>
-                    <div className="text-xs text-[#f4bb28] font-mono font-normal">
-                      ≈ {totalSol} SOL
+                    <div className="text-[#f4bb28] font-mono text-lg font-extrabold">{totalSol.toFixed(4)} SOL</div>
+                    <div className="text-xs text-neutral-400 font-normal">
+                      ≈ {formatCurrency(subtotal)}
                     </div>
                   </div>
                 </div>
@@ -491,16 +470,6 @@ export const Checkout: React.FC = () => {
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
-              </button>
-
-              {/* Devnet Simulation helper for testing without browser extension */}
-              <button
-                type="button"
-                onClick={handleSimulateSolanaPayment}
-                disabled={isProcessing}
-                className="w-full py-2.5 px-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-neutral-300 hover:text-white text-xs font-semibold transition-colors cursor-pointer"
-              >
-                🧪 Simulate Devnet Transaction & Record to Supabase
               </button>
 
               <div className="flex items-center justify-center gap-2 text-[11px] text-neutral-400 pt-1">

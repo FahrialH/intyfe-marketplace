@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { QuantityStepper } from '../components/common/QuantityStepper';
 
 export const Cart: React.FC = () => {
-  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, subtotalEth, showToast } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, subtotalSol, showToast } = useCart();
   const [couponCode, setCouponCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export const Cart: React.FC = () => {
 
   const discountAmount = (subtotal * discountPercent) / 100;
   const finalTotal = subtotal - discountAmount;
-  const finalTotalEth = subtotalEth * (1 - discountPercent / 100);
+  const finalTotalSol = (subtotalSol ?? 0) * (1 - discountPercent / 100);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -101,7 +101,7 @@ export const Cart: React.FC = () => {
                         {item.product.title}
                       </Link>
                       <div className="text-xs text-neutral-400 mt-1 truncate">
-                        Unit: {formatCurrency(item.product.price)} ({item.product.priceEth} ETH)
+                        Unit: {item.product.priceSol ?? item.product.priceEth} SOL ({formatCurrency(item.product.price)})
                       </div>
                     </div>
                   </div>
@@ -113,11 +113,11 @@ export const Cart: React.FC = () => {
                     />
 
                     <div className="text-right min-w-24 sm:min-w-28 shrink-0">
-                      <div className="text-sm sm:text-base font-bold text-white">
-                        {formatCurrency(item.product.price * item.quantity)}
+                      <div className="text-sm sm:text-base font-bold text-white font-mono">
+                        {((item.product.priceSol ?? item.product.priceEth ?? 0) * item.quantity).toFixed(4)} SOL
                       </div>
-                      <div className="text-[11px] text-[#f4bb28]">
-                        {(item.product.priceEth * item.quantity).toFixed(4)} ETH
+                      <div className="text-[11px] text-neutral-400">
+                        {formatCurrency(item.product.price * item.quantity)}
                       </div>
                     </div>
 
@@ -168,7 +168,10 @@ export const Cart: React.FC = () => {
             <div className="space-y-3 text-xs sm:text-sm text-neutral-300">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-semibold text-white">{formatCurrency(subtotal)}</span>
+                <div className="text-right">
+                  <span className="font-semibold text-white font-mono">{(subtotalSol ?? 0).toFixed(4)} SOL</span>
+                  <span className="block text-[11px] text-neutral-400">({formatCurrency(subtotal)})</span>
+                </div>
               </div>
               {discountPercent > 0 && (
                 <div className="flex justify-between text-emerald-400">
@@ -178,14 +181,14 @@ export const Cart: React.FC = () => {
               )}
               <div className="flex justify-between">
                 <span>Network Protocol Fee</span>
-                <span className="text-neutral-400">0.000 ETH (Subsidized)</span>
+                <span className="text-emerald-400 font-mono text-xs">~0.000005 SOL (Subsidized)</span>
               </div>
               <div className="flex justify-between pt-3 border-t border-white/10 font-bold text-base text-white">
                 <span>Total Due</span>
                 <div className="text-right">
-                  <div>{formatCurrency(finalTotal)}</div>
-                  <div className="text-xs text-[#f4bb28] font-mono font-normal">
-                    ≈ {finalTotalEth.toFixed(4)} ETH
+                  <div className="text-[#f4bb28] font-mono font-bold text-lg">{finalTotalSol.toFixed(4)} SOL</div>
+                  <div className="text-xs text-neutral-400 font-normal">
+                    ≈ {formatCurrency(finalTotal)}
                   </div>
                 </div>
               </div>

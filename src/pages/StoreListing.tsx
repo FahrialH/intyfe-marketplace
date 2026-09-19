@@ -18,7 +18,7 @@ export const StoreListing: React.FC = () => {
         );
       })
       .sort((a, b) => {
-        if (sortBy === 'total_orders') return b.totalVolumeEth - a.totalVolumeEth;
+        if (sortBy === 'total_orders') return (b.totalVolumeSol ?? b.totalVolumeEth ?? 0) - (a.totalVolumeSol ?? a.totalVolumeEth ?? 0);
         return 0;
       });
   }, [searchTerm, sortBy]);

@@ -72,7 +72,7 @@ export const createOrderWithItems = async (
         order_id: createdOrder.id,
         product_id: item.product.id,
         quantity: item.quantity,
-        price_sol: (item.product.priceEth || 0.01) * 1.5, // SOL conversion rate
+        price_sol: item.product.priceSol ?? item.product.priceEth ?? 0.1,
       }));
 
       const { error: itemsError } = await supabase
@@ -91,7 +91,7 @@ export const createOrderWithItems = async (
           signature: solanaTxSignature,
           orderId: createdOrder.id,
           expectedSol: totalPriceSol,
-          network: import.meta.env.VITE_SOLANA_NETWORK || 'devnet',
+          network: import.meta.env.VITE_SOLANA_NETWORK || 'mainnet-beta',
         },
       });
     } catch (edgeErr) {

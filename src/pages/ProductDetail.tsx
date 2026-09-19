@@ -114,11 +114,11 @@ export const ProductDetail: React.FC = () => {
 
             <div className="bg-[#151515] border border-white/10 rounded-2xl p-5 mb-6">
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-extrabold text-white">{formattedPrice}</span>
-                <span className="text-sm font-semibold text-[#f4bb28]">({product.priceEth} ETH)</span>
+                <span className="text-3xl font-extrabold text-white">{product.priceSol ?? product.priceEth} SOL</span>
+                <span className="text-sm font-semibold text-neutral-400">({formattedPrice})</span>
               </div>
               <p className="text-xs text-neutral-400 mt-1">
-                Gas fees included via Ethereum L2 rollup. Token mints directly to connected wallet upon purchase.
+                Gas fees included via Solana Mainnet. Token mints directly to connected wallet upon purchase.
               </p>
             </div>
 
@@ -137,8 +137,8 @@ export const ProductDetail: React.FC = () => {
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 min-w-0">
                 <span className="text-[10px] uppercase text-neutral-400 font-bold block">Contract</span>
-                <span className="text-xs font-mono text-[#f4bb28] truncate block mt-1" title={product.tokenContract || '0x438...991A'}>
-                  {product.tokenContract || '0x438...991A'}
+                <span className="text-xs font-mono text-[#f4bb28] truncate block mt-1" title={product.tokenContract || '9WzDX...AWWM'}>
+                  {product.tokenContract || '9WzDX...AWWM'}
                 </span>
               </div>
             </div>
@@ -239,7 +239,7 @@ export const ProductDetail: React.FC = () => {
           <div className="space-y-6 max-w-2xl">
             <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-white text-xs">FilmCollector.eth</span>
+                <span className="font-bold text-white text-xs">FilmCollector.sol</span>
                 <RatingStars rating={5} size={12} showScore={false} />
               </div>
               <p className="text-xs text-neutral-300">

@@ -11,6 +11,7 @@ interface CartContextType {
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
+  subtotalSol: number;
   subtotalEth: number;
   toastMessage: string | null;
   showToast: (msg: string) => void;
@@ -29,6 +30,9 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { connected, connecting, publicKey, disconnect, wallet: activeWallet } = useWallet();
   const { setVisible } = useWalletModal();
+
+  const rawNetwork = import.meta.env.VITE_SOLANA_NETWORK || 'mainnet-beta';
+  const networkLabel = rawNetwork === 'mainnet-beta' || rawNetwork === 'mainnet' ? 'Mainnet' : 'Devnet';
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
@@ -92,10 +96,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (!prevConnectedRef.current && connected && publicKey) {
       const addr = publicKey.toBase58();
-      showToast(`Connected ${activeWallet?.adapter.name || 'Solana Wallet'} (${addr.slice(0, 4)}...${addr.slice(-4)}) on Devnet`);
+      showToast(`Connected ${activeWallet?.adapter.name || 'Solana Wallet'} (${addr.slice(0, 4)}...${addr.slice(-4)}) on ${networkLabel}`);
     }
     prevConnectedRef.current = connected;
-  }, [connected, publicKey, activeWallet]);
+  }, [connected, publicKey, activeWallet, networkLabel]);
 
   const connectWallet = () => {
     setVisible(true);
@@ -114,7 +118,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const subtotalEth = cartItems.reduce((sum, item) => sum + item.product.priceEth * item.quantity, 0);
+  const subtotalSol = cartItems.reduce(
+    (sum, item) => sum + (item.product.priceSol ?? item.product.priceEth ?? 0) * item.quantity,
+    0
+  );
+  const subtotalEth = subtotalSol;
 
   return (
     <CartContext.Provider
@@ -126,6 +134,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearCart,
         itemCount,
         subtotal,
+        subtotalSol,
         subtotalEth,
         toastMessage,
         showToast,
@@ -133,7 +142,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           connected,
           connecting,
           address: walletAddress,
-          network: 'Devnet',
+          network: networkLabel,
           connect: connectWallet,
           disconnect: disconnectWallet,
         },

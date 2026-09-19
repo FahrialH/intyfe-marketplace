@@ -69,7 +69,7 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
         <div className="flex justify-between items-center pt-3 border-t border-white/10 mt-2">
           <div className="flex flex-col">
             <span className="text-sm font-bold bg-gradient-to-r from-[#d81395] to-[#fff2c6] bg-clip-text text-transparent">
-              {story.mintPriceEth} ETH
+              {story.mintPriceSol ?? story.mintPriceEth} SOL
             </span>
             <span className="text-[10px] text-neutral-500 uppercase tracking-wider">
               Mint Price

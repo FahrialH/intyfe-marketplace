@@ -13,7 +13,6 @@ interface AuthContextType {
   isBuyer: boolean;
   signUp: (email: string, password: string, fullName: string, role: UserRole) => Promise<{ error: AuthError | Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | Error | null }>;
-  demoSignIn: (role: UserRole) => Promise<{ error: AuthError | Error | null }>;
   signOut: () => Promise<void>;
   linkSolanaWallet: (address: string) => Promise<{ success: boolean; error?: string }>;
   refreshProfile: () => Promise<void>;
@@ -198,42 +197,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
-  const demoSignIn = async (demoRole: UserRole): Promise<{ error: AuthError | Error | null }> => {
-    const demoEmail = `${demoRole}@intyfe.io`;
-    const demoPass = 'password123';
-    const demoName = `Demo ${demoRole.charAt(0).toUpperCase() + demoRole.slice(1)}`;
-
-    if (!isSupabaseConfigured()) {
-      return signIn(demoEmail, demoPass);
-    }
-
-    // 1. Try signing in
-    let res = await signIn(demoEmail, demoPass);
-    if (res.error) {
-      const msg = res.error.message?.toLowerCase() || '';
-      const isNotFound = msg.includes('invalid login credentials') || msg.includes('invalid credentials') || msg.includes('user not found');
-
-      // 2. If credentials don't exist yet in Supabase, auto-create the demo user
-      if (isNotFound) {
-        const upRes = await signUp(demoEmail, demoPass, demoName, demoRole);
-        if (upRes.error) {
-          return { error: upRes.error };
-        }
-        // Try sign in again after registration
-        res = await signIn(demoEmail, demoPass);
-        if (res.error && res.error.message.toLowerCase().includes('email not confirmed')) {
-          return {
-            error: new Error(
-              `Demo user created! However, "Confirm email" is enabled in Supabase. In Supabase Dashboard -> Authentication -> Providers -> Email, please disable "Confirm email" for instant login without verification.`
-            ),
-          };
-        }
-      }
-    }
-
-    return res;
-  };
-
   const signOut = async () => {
     if (isSupabaseConfigured()) {
       await supabase.auth.signOut();
@@ -291,7 +254,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isBuyer,
         signUp,
         signIn,
-        demoSignIn,
         signOut,
         linkSolanaWallet,
         refreshProfile,
