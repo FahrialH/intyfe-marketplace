@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wallet, User, Layers, LogOut, ChevronRight, Newspaper, Shield, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import { Wallet, User, Layers, LogOut, ChevronRight, Newspaper, Shield, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { mockStories, mockProducts } from '../data/mockData';
 
 export const MyAccount: React.FC = () => {
   const { wallet, showToast } = useCart();
-  const { user, profile, isAdmin, isSeller, role, signOut, linkSolanaWallet, signIn, signUp, demoSignIn } = useAuth();
+  const { user, profile, isAdmin, isSeller, role, signOut, linkSolanaWallet, signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
@@ -364,51 +364,6 @@ export const MyAccount: React.FC = () => {
                 </button>
               </form>
             )}
-
-            {/* Quick Demo Logins */}
-            <div className="pt-4 border-t border-white/10">
-              <span className="text-[11px] text-neutral-400 flex items-center gap-1 mb-2 font-semibold">
-                <Sparkles className="w-3.5 h-3.5 text-[#f4bb28]" /> Instant Demo Roles:
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    setAuthError(null);
-                    const { error } = await demoSignIn('admin');
-                    if (error) setAuthError(error.message);
-                    else showToast('Signed in as ADMIN');
-                  }}
-                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#d81395]/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
-                >
-                  👑 Admin
-                </button>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    setAuthError(null);
-                    const { error } = await demoSignIn('seller');
-                    if (error) setAuthError(error.message);
-                    else showToast('Signed in as SELLER');
-                  }}
-                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-[#f4bb28]/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
-                >
-                  🎬 Seller
-                </button>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    setAuthError(null);
-                    const { error } = await demoSignIn('buyer');
-                    if (error) setAuthError(error.message);
-                    else showToast('Signed in as BUYER');
-                  }}
-                  className="px-2 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 border border-white/10 text-[11px] text-neutral-300 hover:text-white transition-colors cursor-pointer"
-                >
-                  🎟️ Buyer
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       )}

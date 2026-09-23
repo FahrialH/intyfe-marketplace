@@ -24,8 +24,8 @@ export const Shop: React.FC = () => {
         return matchesCat && matchesSearch;
       })
       .sort((a, b) => {
-        if (sortBy === 'price-asc') return a.price - b.price;
-        if (sortBy === 'price-desc') return b.price - a.price;
+        if (sortBy === 'price-asc') return (a.priceSol ?? a.priceEth ?? 0) - (b.priceSol ?? b.priceEth ?? 0);
+        if (sortBy === 'price-desc') return (b.priceSol ?? b.priceEth ?? 0) - (a.priceSol ?? a.priceEth ?? 0);
         if (sortBy === 'rating') return b.rating - a.rating;
         if (sortBy === 'popularity') return b.reviewsCount - a.reviewsCount;
         return 0;

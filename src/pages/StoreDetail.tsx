@@ -84,7 +84,7 @@ export const StoreDetail: React.FC = () => {
               <span>•</span>
               <span>Est. {studio.foundedYear}</span>
               <span>•</span>
-              <span className="text-[#f4bb28] font-semibold">{studio.totalVolumeEth} ETH Total Volume</span>
+              <span className="text-[#f4bb28] font-semibold">{studio.totalVolumeSol ?? studio.totalVolumeEth} SOL Total Volume</span>
             </div>
           </div>
         </div>
