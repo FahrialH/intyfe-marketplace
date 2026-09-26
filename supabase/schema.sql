@@ -81,6 +81,28 @@ CREATE TABLE IF NOT EXISTS public.order_items (
   price_sol NUMERIC(10, 4) NOT NULL
 );
 
+-- 5b. User Bought Items (Passes, Editions & Rights Owned by User)
+CREATE TABLE IF NOT EXISTS public.user_bought_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  order_id UUID REFERENCES public.orders(id) ON DELETE SET NULL,
+  product_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  image_url TEXT,
+  category TEXT,
+  tier TEXT DEFAULT 'Standard',
+  quantity INT DEFAULT 1 NOT NULL,
+  price_sol NUMERIC(10, 4) NOT NULL,
+  price_idr NUMERIC(15, 2),
+  solana_tx_signature TEXT,
+  wallet_address TEXT,
+  access_token TEXT DEFAULT ('PASS-' || upper(substr(md5(random()::text || clock_timestamp()::text), 1, 10))),
+  metadata JSONB DEFAULT '{}'::jsonb,
+  status TEXT DEFAULT 'active' NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
 -- Ensure all columns exist even if tables were previously created with older schema
 ALTER TABLE public.news_articles 
   ADD COLUMN IF NOT EXISTS author_name TEXT,
@@ -256,6 +278,22 @@ CREATE POLICY "Authenticated users can create order items" ON public.order_items
       WHERE orders.id = order_items.order_id AND orders.buyer_id = auth.uid()
     )
   );
+
+-- User Bought Items Policies
+ALTER TABLE public.user_bought_items ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view own bought items" ON public.user_bought_items;
+CREATE POLICY "Users can view own bought items" ON public.user_bought_items 
+  FOR SELECT USING (auth.uid() = user_id OR public.get_auth_role() = 'admin');
+
+DROP POLICY IF EXISTS "Users can insert own bought items" ON public.user_bought_items;
+CREATE POLICY "Users can insert own bought items" ON public.user_bought_items 
+  FOR INSERT WITH CHECK (auth.uid() = user_id OR auth.uid() IS NULL);
+
+DROP POLICY IF EXISTS "Users can update own bought items" ON public.user_bought_items;
+CREATE POLICY "Users can update own bought items" ON public.user_bought_items 
+  FOR UPDATE USING (auth.uid() = user_id OR public.get_auth_role() = 'admin');
+
 
 -- ==============================================================================
 -- STORAGE BUCKETS (article-images, product-images)

@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { QuantityStepper } from '../components/common/QuantityStepper';
 
 export const Cart: React.FC = () => {
-  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, subtotalEth, showToast } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, showToast } = useCart();
   const [couponCode, setCouponCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const navigate = useNavigate();
@@ -20,16 +20,11 @@ export const Cart: React.FC = () => {
     }
   };
 
-  const discountAmount = (subtotal * discountPercent) / 100;
-  const finalTotal = subtotal - discountAmount;
-  const finalTotalEth = subtotalEth * (1 - discountPercent / 100);
+  const discountAmount = Number(((subtotal * discountPercent) / 100).toFixed(4));
+  const finalTotal = Number((subtotal - discountAmount).toFixed(4));
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      maximumFractionDigits: 0,
-    }).format(amount);
+  const formatSol = (val: number) => {
+    return `${Number(val.toFixed(4))} SOL`;
   };
 
   if (cartItems.length === 0) {
@@ -70,7 +65,7 @@ export const Cart: React.FC = () => {
         </h1>
         <button
           onClick={clearCart}
-          className="text-xs text-rose-400 hover:underline"
+          className="text-xs text-rose-400 hover:underline cursor-pointer"
         >
           Clear All Items
         </button>
@@ -100,8 +95,8 @@ export const Cart: React.FC = () => {
                       >
                         {item.product.title}
                       </Link>
-                      <div className="text-xs text-neutral-400 mt-1 truncate">
-                        Unit: {formatCurrency(item.product.price)} ({item.product.priceEth} ETH)
+                      <div className="text-xs text-[#f4bb28] font-mono mt-1 truncate">
+                        Unit: {formatSol(item.product.price)}
                       </div>
                     </div>
                   </div>
@@ -113,17 +108,14 @@ export const Cart: React.FC = () => {
                     />
 
                     <div className="text-right min-w-24 sm:min-w-28 shrink-0">
-                      <div className="text-sm sm:text-base font-bold text-white">
-                        {formatCurrency(item.product.price * item.quantity)}
-                      </div>
-                      <div className="text-[11px] text-[#f4bb28]">
-                        {(item.product.priceEth * item.quantity).toFixed(4)} ETH
+                      <div className="text-sm sm:text-base font-bold font-mono text-[#f4bb28]">
+                        {formatSol(item.product.price * item.quantity)}
                       </div>
                     </div>
 
                     <button
                       onClick={() => removeFromCart(item.product.id)}
-                      className="p-2 text-neutral-500 hover:text-rose-400 rounded-lg hover:bg-white/5 transition-colors"
+                      className="p-2 text-neutral-500 hover:text-rose-400 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                       title="Remove item"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -150,7 +142,7 @@ export const Cart: React.FC = () => {
               />
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/15 transition-colors shrink-0"
+                className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/15 transition-colors shrink-0 cursor-pointer"
               >
                 Apply
               </button>
@@ -167,40 +159,37 @@ export const Cart: React.FC = () => {
 
             <div className="space-y-3 text-xs sm:text-sm text-neutral-300">
               <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-semibold text-white">{formatCurrency(subtotal)}</span>
+                <span>Subtotal (SOL)</span>
+                <span className="font-semibold font-mono text-white">{formatSol(subtotal)}</span>
               </div>
               {discountPercent > 0 && (
-                <div className="flex justify-between text-emerald-400">
+                <div className="flex justify-between text-emerald-400 font-mono">
                   <span>Discount ({discountPercent}%)</span>
-                  <span>-{formatCurrency(discountAmount)}</span>
+                  <span>-{formatSol(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span>Network Protocol Fee</span>
-                <span className="text-neutral-400">0.000 ETH (Subsidized)</span>
+                <span>Solana Network Fee</span>
+                <span className="text-emerald-400 font-mono">~0.000005 SOL (Devnet)</span>
               </div>
               <div className="flex justify-between pt-3 border-t border-white/10 font-bold text-base text-white">
                 <span>Total Due</span>
                 <div className="text-right">
-                  <div>{formatCurrency(finalTotal)}</div>
-                  <div className="text-xs text-[#f4bb28] font-mono font-normal">
-                    ≈ {finalTotalEth.toFixed(4)} ETH
-                  </div>
+                  <div className="font-mono text-[#f4bb28] text-lg">{formatSol(finalTotal)}</div>
                 </div>
               </div>
             </div>
 
             <button
               onClick={() => navigate('/checkout')}
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-sm shadow-[0_0_20px_rgba(216,19,149,0.3)] transition-all active:scale-98"
+              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-sm shadow-[0_0_20px_rgba(216,19,149,0.3)] transition-all active:scale-98 cursor-pointer"
             >
               <span>Proceed to Checkout</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <p className="text-[11px] text-neutral-500 text-center leading-relaxed">
-              Crypto and credit card payments accepted. Tokens will be minted and delivered upon transaction confirmation.
+              Solana Web3 Devnet & card payments accepted. Passes will be minted directly to your connected wallet upon confirmation.
             </p>
           </div>
         </div>

@@ -10,8 +10,8 @@ interface CartContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
-  subtotal: number;
-  subtotalEth: number;
+  subtotal: number; // Subtotal in SOL
+  subtotalSol: number; // Explicit SOL alias
   toastMessage: string | null;
   showToast: (msg: string) => void;
   wallet: {
@@ -113,8 +113,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const walletAddress = publicKey ? publicKey.toBase58() : null;
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const subtotalEth = cartItems.reduce((sum, item) => sum + item.product.priceEth * item.quantity, 0);
+  const rawSubtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const subtotal = Number(rawSubtotal.toFixed(4));
+  const subtotalSol = subtotal;
 
   return (
     <CartContext.Provider
@@ -126,7 +127,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearCart,
         itemCount,
         subtotal,
-        subtotalEth,
+        subtotalSol,
         toastMessage,
         showToast,
         wallet: {

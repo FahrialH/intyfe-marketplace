@@ -51,8 +51,7 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/deziqettd-e.jpg',
     readingTimeMinutes: 12,
     pagesCount: 118,
-    mintPriceEth: 0.012,
-    mintPriceUsd: 42,
+    mintPriceSol: 0.18,
     editionTotal: 100,
     editionMinted: 74,
     synopsis: 'The sun dropped behind the jagged ridge like a spent brass casing. Dust hung suspended in the motionless air of Oakhaven, catching the amber twilight in a copper haze. For seven years, Cole had kept his hands off the cold steel, working the barren loam of his ranch with bleeding palms. Now three riders are waiting at the crossroads, their silhouettes stark against the burning red horizon.',
@@ -92,8 +91,7 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/rdaxhyjjc1o-1024x683.jpg',
     readingTimeMinutes: 18,
     pagesCount: 94,
-    mintPriceEth: 0.03,
-    mintPriceUsd: 105,
+    mintPriceSol: 0.45,
     editionTotal: 250,
     editionMinted: 189,
     synopsis: 'Deep below the sea wall of reconstructed Tokyo Sector 4, subterranean servers hum with cold cryogenic mist. Kaelen, an anomaly technician, discovers an unlogged thread compiling itself from fragmented memories.',
@@ -129,8 +127,7 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/rkixtzpoq28.jpg',
     readingTimeMinutes: 15,
     pagesCount: 110,
-    mintPriceEth: 0.02,
-    mintPriceUsd: 70,
+    mintPriceSol: 0.30,
     editionTotal: 150,
     editionMinted: 142,
     synopsis: 'At the Kepler Lagrange Relay, Dr. Elena Thorne monitors interplanetary telemetry in absolute solitude. When solar storms disrupt communication with Earth, an organic waveform begins manifesting directly in the acoustic monitors.',
@@ -164,8 +161,7 @@ export const mockStories: Story[] = [
     coverImage: '/assets/images/otxjhyjbkeg-1024x683.jpg',
     readingTimeMinutes: 22,
     pagesCount: 135,
-    mintPriceEth: 0.025,
-    mintPriceUsd: 87,
+    mintPriceSol: 0.38,
     editionTotal: 300,
     editionMinted: 215,
     synopsis: 'Born inside the pressurized dome of New Valles Marineris, Mira knows the red dust better than the blue oceans of Earth she has only seen in archived holoreels.',
@@ -189,8 +185,7 @@ export const mockProducts: Product[] = [
     slug: 'action-01',
     title: 'Action 01 - Executive Script Tier',
     description: 'Original shooting screenplay package for Action 01. Includes full director script PDF, character bible, storyboard animatic pass, and 1 community producer vote.',
-    price: 3000000,
-    priceEth: 0.012,
+    price: 0.18,
     category: 'Action / Thriller',
     rating: 5.0,
     reviewsCount: 18,
@@ -216,8 +211,7 @@ export const mockProducts: Product[] = [
     slug: 'movie-horror-01',
     title: 'Movie Horror 01 - First Edition',
     description: 'Chilling psychological horror manuscript with signed digital concept art and exclusive access to the virtual writers room read-through sessions.',
-    price: 3000000,
-    priceEth: 0.012,
+    price: 0.18,
     category: 'Horror / Sci-Fi',
     rating: 4.8,
     reviewsCount: 12,
@@ -241,9 +235,8 @@ export const mockProducts: Product[] = [
     slug: 'protocol-genesis-nft',
     title: 'Protocol Genesis Collector Pass',
     description: 'The definitive cryptographic access token granting holder status as executive patron of the Protocol Genesis cinematic franchise.',
-    price: 7500000,
-    priceEth: 0.03,
-    originalPrice: 9000000,
+    price: 0.45,
+    originalPrice: 0.55,
     category: 'Sci-Fi Franchise',
     rating: 5.0,
     reviewsCount: 34,
@@ -267,8 +260,7 @@ export const mockProducts: Product[] = [
     slug: 'intyfe-studio-hoodie',
     title: 'Intyfe Official Studio Heavyweight Hoodie',
     description: 'Custom embroidered French Terry cotton hoodie with woven blockchain identity QR patch linking to verified owner portfolio on-chain.',
-    price: 1250000,
-    priceEth: 0.005,
+    price: 0.08,
     category: 'Official Merchandise',
     rating: 4.9,
     reviewsCount: 45,
@@ -291,8 +283,7 @@ export const mockProducts: Product[] = [
     slug: 'cinematic-lens-pack',
     title: 'Anamorphic LUTs & Soundscape Pack',
     description: 'Master film grading color look-up tables and 96kHz lossless environmental audio ambiances recorded on vintage 35mm equipment.',
-    price: 1800000,
-    priceEth: 0.007,
+    price: 0.12,
     category: 'Creator Assets',
     rating: 4.7,
     reviewsCount: 29,
@@ -314,8 +305,7 @@ export const mockProducts: Product[] = [
     slug: 'mars-rising-script',
     title: 'Mars Rising - Extended Spec Script',
     description: 'Full 135-page spec script exploring political schisms between the orbital stations and red surface colonies.',
-    price: 4500000,
-    priceEth: 0.018,
+    price: 0.28,
     category: 'Sci-Fi Franchise',
     rating: 5.0,
     reviewsCount: 16,
@@ -346,7 +336,7 @@ export const mockStudios: Studio[] = [
     foundedYear: 2023,
     location: 'Serang, Banten, Indonesia',
     totalStories: 6,
-    totalVolumeEth: 184.5,
+    totalVolumeSol: 2750.5,
     productsCount: 8,
     socials: {
       twitter: 'https://twitter.com/intyfe',
@@ -366,7 +356,7 @@ export const mockStudios: Studio[] = [
     foundedYear: 2024,
     location: 'Jakarta Digital Cinema Center, Indonesia',
     totalStories: 4,
-    totalVolumeEth: 96.2,
+    totalVolumeSol: 1440.0,
     productsCount: 5,
     socials: {
       twitter: 'https://twitter.com/intyfe',
@@ -379,9 +369,9 @@ export const mockNews: NewsArticle[] = [
   {
     id: 'news-1',
     slug: 'intyfe-protocol-v2-mainnet-launch',
-    title: 'Intyfe Protocol v2 Launches on Ethereum L2 with Zero-Gas Script Minting',
-    excerpt: 'Our major protocol upgrade introduces instant fractional ownership passes, zero-gas script timestamps, and automated secondary royalty splits for writing teams.',
-    content: `Today marks a pivotal milestone for decentralized film production. We are thrilled to announce that Intyfe Protocol v2 is officially live on Ethereum Layer 2 rollup networks.
+    title: 'Intyfe Protocol v2 Launches on Solana with High-Speed Script Minting',
+    excerpt: 'Our major protocol upgrade introduces instant fractional ownership passes, sub-second script timestamps, and automated secondary royalty splits for writing teams.',
+    content: `Today marks a pivotal milestone for decentralized film production. We are thrilled to announce that Intyfe Protocol v2 is officially live on Solana.
 
 ### What Changes in v2?
 
@@ -389,9 +379,9 @@ Traditional filmmaking has long required creators to surrender their intellectua
 
 Key highlights of the v2 protocol upgrade include:
 
-* **Zero-Gas Relayer Infrastructure**: Minting registered script drafts and casting passes no longer burdens indie writers with volatile gas fees. All standard transaction fees are sponsored through our decentralized sequencer relayer pool.
+* **Sub-Second Solana Confirmation**: Minting registered script drafts and casting passes executes with sub-second finality and near-zero fees.
 * **Instant Dynamic Royalty Splits**: Collaborative writing duos and studios can set granular automated revenue-sharing splits directly on-chain. When a studio or producer purchases an option pass, funds are distributed concurrently to all verified wallets.
-* **Snapshot Protocol v2 Governance**: Passes now carry weighted governance voting privileges natively compatible with decentralized autonomous organizations (DAOs). Token holders can vote on production milestones, location scouting, and premiere schedules.
+* **Snapshot Protocol Governance**: Passes now carry weighted governance voting privileges natively compatible with cinema DAOs. Token holders can vote on production milestones, location scouting, and premiere schedules.
 
 ### How to Get Started
 
@@ -405,7 +395,7 @@ Creators can immediately navigate to their **Creator Studio Dashboard** to regis
       avatar: '/assets/images/cropped-image-180x180.png',
       role: 'Core Contributors',
     },
-    tags: ['Ethereum L2', 'Rollups', 'Smart Contracts', 'Creator Royalties'],
+    tags: ['Solana', 'SPL Tokens', 'Smart Contracts', 'Creator Royalties'],
     featured: true,
   },
   {

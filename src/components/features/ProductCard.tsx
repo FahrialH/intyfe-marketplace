@@ -12,12 +12,6 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
 
-  const formattedPrice = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-  }).format(product.price);
-
   return (
     <div className="flex flex-col justify-between bg-[#151515] border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#d81395]/40 hover:shadow-[0_12px_24px_rgba(0,0,0,0.5),0_0_20px_rgba(216,19,149,0.15)] min-w-0">
       <div>
@@ -49,12 +43,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <RatingStars rating={product.rating} size={12} showScore={false} />
           </div>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="font-bold text-white text-base">
-              {formattedPrice}
+            <span className="font-extrabold text-[#f4bb28] font-mono text-base">
+              {product.price} SOL
             </span>
-            <span className="text-xs text-neutral-400">
-              ({product.priceEth} ETH)
-            </span>
+            {product.originalPrice && (
+              <span className="text-xs text-neutral-500 line-through font-mono">
+                {product.originalPrice} SOL
+              </span>
+            )}
           </div>
         </div>
       </div>

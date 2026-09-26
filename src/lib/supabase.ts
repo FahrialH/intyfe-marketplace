@@ -55,7 +55,7 @@ export interface ProductRecord {
   title: string;
   description: string;
   price_sol: number;
-  price_idr: number;
+  price_idr?: number | null;
   category: string;
   image_url: string;
   gallery_images: string[];
@@ -84,4 +84,25 @@ export interface OrderItemRecord {
   product_id: string;
   quantity: number;
   price_sol: number;
+}
+
+export interface UserBoughtItemRecord {
+  id: string;
+  user_id: string;
+  order_id?: string | null;
+  product_id: string;
+  title: string;
+  description?: string | null;
+  image_url?: string | null;
+  category?: string | null;
+  tier?: string;
+  quantity: number;
+  price_sol: number;
+  price_idr?: number | null;
+  solana_tx_signature?: string | null;
+  wallet_address?: string | null;
+  access_token: string;
+  metadata?: Record<string, unknown>;
+  status: 'active' | 'redeemed' | 'transferred';
+  created_at: string;
 }

@@ -12,8 +12,7 @@ export interface Story {
   coverImage: string;
   readingTimeMinutes: number;
   pagesCount: number;
-  mintPriceEth: number;
-  mintPriceUsd: number;
+  mintPriceSol: number;
   editionTotal: number;
   editionMinted: number;
   scriptExcerpt: {
@@ -35,9 +34,8 @@ export interface Product {
   slug: string;
   title: string;
   description: string;
-  price: number;
-  priceEth: number;
-  originalPrice?: number;
+  price: number; // Price in SOL
+  originalPrice?: number; // Original price in SOL
   category: string;
   rating: number;
   reviewsCount: number;
@@ -65,7 +63,7 @@ export interface Studio {
   foundedYear: number;
   location: string;
   totalStories: number;
-  totalVolumeEth: number;
+  totalVolumeSol: number;
   productsCount: number;
   socials: {
     twitter?: string;

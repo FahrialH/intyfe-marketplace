@@ -60,7 +60,7 @@ export const StudioCard: React.FC<StudioCardProps> = ({ studio }) => {
               <span className="text-[10px] text-neutral-400 uppercase">Stories</span>
             </div>
             <div className="bg-white/5 rounded-lg py-1.5 px-2">
-              <span className="block text-xs font-bold text-[#f4bb28]">{studio.totalVolumeEth} ETH</span>
+              <span className="block text-xs font-bold text-[#f4bb28]">{studio.totalVolumeSol} SOL</span>
               <span className="text-[10px] text-neutral-400 uppercase">Volume</span>
             </div>
           </div>

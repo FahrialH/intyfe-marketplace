@@ -119,8 +119,8 @@ export const StoryDetail: React.FC = () => {
 
           <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto shrink-0 border-t sm:border-t-0 pt-4 sm:pt-0 border-white/10">
             <div className="text-left sm:text-right">
-              <span className="block text-xl font-extrabold text-[#f4bb28]">{story.mintPriceEth} ETH</span>
-              <span className="text-[11px] text-neutral-400">≈ ${story.mintPriceUsd} USD</span>
+              <span className="block text-xl font-extrabold text-[#f4bb28] font-mono">{story.mintPriceSol} SOL</span>
+              <span className="text-[11px] text-neutral-400">Solana Devnet Mint</span>
             </div>
             <button
               onClick={handleMint}

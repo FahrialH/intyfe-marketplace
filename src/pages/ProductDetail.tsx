@@ -17,12 +17,6 @@ export const ProductDetail: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'attributes' | 'reviews'>('description');
 
-  const formattedPrice = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0,
-  }).format(product.price);
-
   const relatedProducts = mockProducts.filter((p) => p.id !== product.id).slice(0, 3);
 
   const handleShare = () => {
@@ -114,11 +108,15 @@ export const ProductDetail: React.FC = () => {
 
             <div className="bg-[#151515] border border-white/10 rounded-2xl p-5 mb-6">
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-extrabold text-white">{formattedPrice}</span>
-                <span className="text-sm font-semibold text-[#f4bb28]">({product.priceEth} ETH)</span>
+                <span className="text-3xl font-extrabold text-[#f4bb28] font-mono">{product.price} SOL</span>
+                {product.originalPrice && (
+                  <span className="text-sm font-semibold text-neutral-500 line-through font-mono">
+                    {product.originalPrice} SOL
+                  </span>
+                )}
               </div>
               <p className="text-xs text-neutral-400 mt-1">
-                Gas fees included via Ethereum L2 rollup. Token mints directly to connected wallet upon purchase.
+                Solana Devnet network fees (~0.000005 SOL) included. Collectible pass mints directly to connected wallet upon purchase.
               </p>
             </div>
 
@@ -239,7 +237,7 @@ export const ProductDetail: React.FC = () => {
           <div className="space-y-6 max-w-2xl">
             <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-bold text-white text-xs">FilmCollector.eth</span>
+                <span className="font-bold text-white text-xs">FilmCollector.sol</span>
                 <RatingStars rating={5} size={12} showScore={false} />
               </div>
               <p className="text-xs text-neutral-300">

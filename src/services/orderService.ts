@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured, OrderRecord } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, OrderRecord, UserBoughtItemRecord } from '../lib/supabase';
 import { CartItem } from '../types';
 
 export interface CreateOrderParams {
@@ -72,7 +72,7 @@ export const createOrderWithItems = async (
         order_id: createdOrder.id,
         product_id: item.product.id,
         quantity: item.quantity,
-        price_sol: (item.product.priceEth || 0.01) * 1.5, // SOL conversion rate
+        price_sol: item.product.price,
       }));
 
       const { error: itemsError } = await supabase
@@ -84,7 +84,40 @@ export const createOrderWithItems = async (
       }
     }
 
-    // 3. Trigger backend verification via Supabase Edge Function (if available)
+    // 3. Insert into user_bought_items table so user can view & own their collectibles/passes
+    if (buyerId && items.length > 0) {
+      const boughtItemsToInsert = items.map((item) => ({
+        user_id: buyerId,
+        order_id: createdOrder.id,
+        product_id: item.product.id,
+        title: item.product.title,
+        description: item.product.description || '',
+        image_url: item.product.image || '',
+        category: item.product.category || 'Screenplay Pass',
+        tier: item.product.tier || 'Standard',
+        quantity: item.quantity,
+        price_sol: item.product.price,
+        price_idr: null,
+        solana_tx_signature: solanaTxSignature,
+        wallet_address: walletAddress,
+        access_token: `INTYFE-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        metadata: {
+          attributes: item.product.attributes || [],
+          tags: item.product.tags || [],
+        },
+        status: 'active',
+      }));
+
+      const { error: boughtError } = await supabase
+        .from('user_bought_items')
+        .insert(boughtItemsToInsert);
+
+      if (boughtError) {
+        console.warn('Notice inserting user_bought_items:', boughtError.message);
+      }
+    }
+
+    // 4. Trigger backend verification via Supabase Edge Function (if available)
     try {
       await supabase.functions.invoke('verify-solana-tx', {
         body: {
@@ -105,3 +138,26 @@ export const createOrderWithItems = async (
     return { order: null, error };
   }
 };
+
+export const getUserBoughtItems = async (userId: string): Promise<UserBoughtItemRecord[]> => {
+  if (!isSupabaseConfigured() || !userId) {
+    return [];
+  }
+  try {
+    const { data, error } = await supabase
+      .from('user_bought_items')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.warn('[orderService] Error fetching user bought items:', error.message);
+      return [];
+    }
+    return (data as UserBoughtItemRecord[]) || [];
+  } catch (err) {
+    console.warn('[orderService] Failed to get user bought items:', err);
+    return [];
+  }
+};
+

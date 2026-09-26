@@ -1,9 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Wallet, User, Layers, LogOut, ChevronRight, Newspaper, Shield, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import {
+  Wallet,
+  User,
+  Layers,
+  LogOut,
+  ChevronRight,
+  Newspaper,
+  Shield,
+  CheckCircle2,
+  AlertCircle,
+  Sparkles,
+  ExternalLink,
+  ShoppingBag,
+  Loader2,
+  Receipt,
+} from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { mockStories, mockProducts } from '../data/mockData';
+import { getUserBoughtItems } from '../services/orderService';
+import { UserBoughtItemRecord } from '../lib/supabase';
 
 export const MyAccount: React.FC = () => {
   const { wallet, showToast } = useCart();
@@ -16,6 +32,34 @@ export const MyAccount: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLinking, setIsLinking] = useState(false);
+
+  // Bought items from Supabase user_bought_items table
+  const [boughtItems, setBoughtItems] = useState<UserBoughtItemRecord[]>([]);
+  const [isLoadingBought, setIsLoadingBought] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const fetchBoughtItems = async () => {
+      if (user?.id) {
+        setIsLoadingBought(true);
+        const items = await getUserBoughtItems(user.id);
+        if (active) {
+          setBoughtItems(items);
+          setIsLoadingBought(false);
+        }
+      } else {
+        if (active) {
+          setBoughtItems([]);
+          setIsLoadingBought(false);
+        }
+      }
+    };
+
+    fetchBoughtItems();
+    return () => {
+      active = false;
+    };
+  }, [user?.id]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +97,14 @@ export const MyAccount: React.FC = () => {
       showToast(res.error || 'Failed to link wallet');
     }
   };
+
+  // Dynamic portfolio calculations
+  const totalPassesCount = boughtItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
+  const totalPortfolioSol = boughtItems.reduce((acc, it) => acc + (Number(it.price_sol) || 0), 0);
+  const votingPower = totalPassesCount > 0 ? totalPassesCount * 50 : 25;
+
+  const network = import.meta.env.VITE_SOLANA_NETWORK || 'devnet';
+  const clusterParam = network === 'mainnet-beta' ? '' : `?cluster=${network}`;
 
   return (
     <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1000px]">
@@ -161,7 +213,7 @@ export const MyAccount: React.FC = () => {
                   </span>
                   <button
                     onClick={() => linkSolanaWallet('')}
-                    className="text-xs text-neutral-400 hover:text-rose-400 underline self-start sm:self-auto"
+                    className="text-xs text-neutral-400 hover:text-rose-400 underline self-start sm:self-auto cursor-pointer"
                   >
                     Unlink
                   </button>
@@ -171,12 +223,12 @@ export const MyAccount: React.FC = () => {
                   <p className="text-xs text-neutral-400">
                     {wallet.connected
                       ? `Active Wallet: ${wallet.address?.slice(0, 8)}...${wallet.address?.slice(-6)}`
-                      : 'Connect your Phantom or Solflare wallet to bind your on-chain credentials.'}
+                      : 'Connect your Phantom or Solflare wallet on Devnet to link your on-chain ownership.'}
                   </p>
                   <button
                     onClick={handleLinkWallet}
                     disabled={isLinking}
-                    className="px-4 py-2 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black text-xs font-bold transition-all shrink-0"
+                    className="px-4 py-2 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black text-xs font-bold transition-all shrink-0 cursor-pointer"
                   >
                     {wallet.connected ? 'Bind Active Wallet' : 'Connect & Link Wallet'}
                   </button>
@@ -184,60 +236,131 @@ export const MyAccount: React.FC = () => {
               )}
             </div>
 
-            {/* Dashboard Stats */}
+            {/* Dynamic Dashboard Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <span className="text-xs text-neutral-400 block mb-1">Minted Script Passes</span>
-                <span className="text-2xl font-extrabold text-white">3</span>
-                <span className="text-[11px] text-emerald-400 block mt-1">+1 this month</span>
+                <span className="text-2xl font-extrabold text-white">{totalPassesCount}</span>
+                <span className="text-[11px] text-emerald-400 block mt-1">Stored in user_bought_items</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <span className="text-xs text-neutral-400 block mb-1">Producer Voting Weight</span>
-                <span className="text-2xl font-extrabold text-[#f4bb28]">125 VP</span>
-                <span className="text-[11px] text-neutral-400 block mt-1">Snapshot Protocol v2</span>
+                <span className="text-2xl font-extrabold text-[#f4bb28]">{votingPower} VP</span>
+                <span className="text-[11px] text-neutral-400 block mt-1">Snapshot Protocol Devnet</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                <span className="text-xs text-neutral-400 block mb-1">Portfolio Value</span>
-                <span className="text-2xl font-extrabold text-[#d81395]">0.084 SOL</span>
-                <span className="text-[11px] text-neutral-400 block mt-1">≈ 12.60 USD</span>
+                <span className="text-xs text-neutral-400 block mb-1">Total Pass Portfolio Value</span>
+                <span className="text-2xl font-extrabold text-[#d81395]">
+                  {totalPortfolioSol.toFixed(4)} SOL
+                </span>
+                <span className="text-[11px] text-neutral-400 block mt-1">Solana Devnet Assets</span>
               </div>
             </div>
           </div>
 
-          {/* Owned Passes & Activity */}
+          {/* Owned Passes & Bought Items Section */}
           <div className="bg-[#151515] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#d81395]" />
-              <span>Your Registered Screenplay Passes</span>
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-4">
-                <img
-                  src={mockStories[0].coverImage}
-                  alt=""
-                  className="w-16 h-16 rounded-xl object-cover"
-                />
-                <div>
-                  <span className="text-[10px] text-[#f4bb28] font-bold uppercase block">Executive Pass</span>
-                  <h4 className="text-white font-bold text-sm">{mockStories[0].title}</h4>
-                  <p className="text-xs text-neutral-400 mt-1">Token ID: #0074 • 1 Producer Vote</p>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center gap-4">
-                <img
-                  src={mockProducts[0].image}
-                  alt=""
-                  className="w-16 h-16 rounded-xl object-cover"
-                />
-                <div>
-                  <span className="text-[10px] text-[#d81395] font-bold uppercase block">Director Edition</span>
-                  <h4 className="text-white font-bold text-sm">{mockProducts[0].title}</h4>
-                  <p className="text-xs text-neutral-400 mt-1">Token ID: #0112 • Commercial Spec Rights</p>
-                </div>
-              </div>
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Layers className="w-5 h-5 text-[#d81395]" />
+                <span>Your Registered Screenplay Passes & Bought Items ({boughtItems.length})</span>
+              </h3>
+              <Link
+                to="/shop"
+                className="text-xs text-[#f4bb28] hover:underline flex items-center gap-1"
+              >
+                <span>Browse Marketplace</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
+
+            {isLoadingBought ? (
+              <div className="py-12 flex flex-col items-center justify-center gap-3 text-neutral-400">
+                <Loader2 className="w-6 h-6 animate-spin text-[#d81395]" />
+                <span className="text-xs">Fetching your collectible passes from Supabase database...</span>
+              </div>
+            ) : boughtItems.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {boughtItems.map((item) => {
+                  const explorerUrl = item.solana_tx_signature
+                    ? `https://explorer.solana.com/tx/${item.solana_tx_signature}${clusterParam}`
+                    : null;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="bg-white/5 border border-white/10 hover:border-white/20 transition-all rounded-2xl p-4 flex flex-col justify-between gap-4 shadow-sm"
+                    >
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={item.image_url || '/assets/images/deziqettd-e.jpg'}
+                          alt={item.title}
+                          className="w-20 h-20 rounded-xl object-cover shrink-0 bg-neutral-900 border border-white/10"
+                        />
+                        <div className="space-y-1 min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-[#f4bb28] font-bold uppercase tracking-wider bg-[#f4bb28]/10 border border-[#f4bb28]/20 px-2 py-0.5 rounded-md">
+                              {item.tier || 'Pass'}
+                            </span>
+                            <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md uppercase">
+                              {item.status || 'Active'}
+                            </span>
+                          </div>
+                          <h4 className="text-white font-bold text-sm truncate" title={item.title}>
+                            {item.title}
+                          </h4>
+                          <p className="text-[11px] text-neutral-400 font-mono">
+                            Token: <span className="text-neutral-200">{item.access_token}</span> • Qty: {item.quantity}
+                          </p>
+                          <div className="text-[11px] text-neutral-400 flex items-center gap-2 pt-0.5">
+                            <span className="text-[#f4bb28] font-mono font-semibold">{item.price_sol} SOL</span>
+                            {item.created_at && (
+                              <span>• {new Date(item.created_at).toLocaleDateString()}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {explorerUrl && (
+                        <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
+                          <span className="text-neutral-400 font-mono truncate max-w-[170px]" title={item.solana_tx_signature || ''}>
+                            Tx: {item.solana_tx_signature?.slice(0, 8)}...{item.solana_tx_signature?.slice(-6)}
+                          </span>
+                          <a
+                            href={explorerUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-[#d81395] hover:underline shrink-0"
+                          >
+                            <span>Solana Explorer ({network})</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="p-8 rounded-2xl bg-white/5 border border-white/10 text-center space-y-4">
+                <div className="w-12 h-12 rounded-full bg-white/10 text-neutral-400 flex items-center justify-center mx-auto">
+                  <Receipt className="w-6 h-6 text-[#f4bb28]" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-base font-bold text-white">No Bought Items in Your Vault Yet</h4>
+                  <p className="text-xs text-neutral-400 max-w-sm mx-auto">
+                    You haven't purchased any screenplay passes yet. Explore independent film releases on the Intyfe Marketplace and mint passes directly to your Solana wallet.
+                  </p>
+                </div>
+                <Link
+                  to="/shop"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white text-xs font-semibold shadow-md transition-all"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Browse Marketplace</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       ) : (
