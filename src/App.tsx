@@ -6,7 +6,7 @@ import { CartProvider } from './context/CartContext';
 import { Layout } from './components/layout/Layout';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
-import { RequireAdmin, RequireSeller } from './components/ProtectedRoutes';
+import { RequireAdmin, RequireSeller, RequireAuth } from './components/ProtectedRoutes';
 
 import { Home } from './pages/Home';
 import { Shop } from './pages/Shop';
@@ -50,7 +50,14 @@ export const App: React.FC = () => {
                   <Route path="sellers" element={<StoreListing />} />
                   <Route path="store/:slug" element={<StoreDetail />} />
                   <Route path="cart" element={<Cart />} />
-                  <Route path="checkout" element={<Checkout />} />
+                  <Route
+                    path="checkout"
+                    element={
+                      <RequireAuth>
+                        <Checkout />
+                      </RequireAuth>
+                    }
+                  />
                   <Route path="account" element={<MyAccount />} />
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<SignUp />} />

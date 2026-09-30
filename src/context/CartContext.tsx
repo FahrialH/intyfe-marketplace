@@ -2,10 +2,11 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { Product, CartItem } from '../types';
+import { useAuth } from './AuthContext';
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, quantity?: number, tier?: string) => void;
+  addToCart: (product: Product, quantity?: number, tier?: string) => boolean;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -14,6 +15,10 @@ interface CartContextType {
   subtotalSol: number; // Explicit SOL alias
   toastMessage: string | null;
   showToast: (msg: string) => void;
+  isAuthModalOpen: boolean;
+  pendingProduct: Product | null;
+  openAuthModal: (product?: Product) => void;
+  closeAuthModal: () => void;
   wallet: {
     connected: boolean;
     connecting: boolean;
@@ -27,6 +32,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const { connected, connecting, publicKey, disconnect, wallet: activeWallet } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -40,6 +46,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [pendingProduct, setPendingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     localStorage.setItem('intyfe_cart', JSON.stringify(cartItems));
@@ -52,7 +60,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 3500);
   };
 
-  const addToCart = (product: Product, quantity = 1, tier?: string) => {
+  const openAuthModal = (product?: Product) => {
+    if (product) setPendingProduct(product);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+    setPendingProduct(null);
+  };
+
+  const addToCart = (product: Product, quantity = 1, tier?: string): boolean => {
+    if (!user) {
+      setPendingProduct(product);
+      setIsAuthModalOpen(true);
+      showToast('Please sign in or register to add items to your cart.');
+      return false;
+    }
+
     setCartItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
@@ -65,6 +90,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return [...prev, { product, quantity, selectedTier: tier || product.tier }];
     });
     showToast(`"${product.title}" added to your cart!`);
+    return true;
   };
 
   const removeFromCart = (productId: string) => {
@@ -130,6 +156,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         subtotalSol,
         toastMessage,
         showToast,
+        isAuthModalOpen,
+        pendingProduct,
+        openAuthModal,
+        closeAuthModal,
         wallet: {
           connected,
           connecting,

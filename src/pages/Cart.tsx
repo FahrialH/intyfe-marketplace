@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ArrowRight, ShoppingBag, ChevronRight, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { QuantityStepper } from '../components/common/QuantityStepper';
 
 export const Cart: React.FC = () => {
-  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, showToast } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, showToast, openAuthModal } = useCart();
+  const { user } = useAuth();
   const [couponCode, setCouponCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const navigate = useNavigate();
@@ -181,7 +183,13 @@ export const Cart: React.FC = () => {
             </div>
 
             <button
-              onClick={() => navigate('/checkout')}
+              onClick={() => {
+                if (!user) {
+                  openAuthModal();
+                  return;
+                }
+                navigate('/checkout');
+              }}
               className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white font-semibold text-sm shadow-[0_0_20px_rgba(216,19,149,0.3)] transition-all active:scale-98 cursor-pointer"
             >
               <span>Proceed to Checkout</span>

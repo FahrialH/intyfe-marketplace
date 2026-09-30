@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { AuthRequiredModal } from '../common/AuthRequiredModal';
 
 export const Layout: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ export const Layout: React.FC = () => {
         <Outlet />
       </main>
       <Footer />
+      <AuthRequiredModal />
     </div>
   );
 };

@@ -210,10 +210,12 @@ export const ProductDetail: React.FC = () => {
               </button>
               <button
                 onClick={() => {
-                  addToCart(product, quantity);
-                  navigate('/checkout');
+                  const added = addToCart(product, quantity);
+                  if (added) {
+                    navigate('/checkout');
+                  }
                 }}
-                className="py-3.5 px-6 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black font-semibold text-sm shadow-md transition-all active:scale-98"
+                className="py-3.5 px-6 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black font-semibold text-sm shadow-md transition-all active:scale-98 cursor-pointer"
               >
                 Instant Checkout
               </button>
