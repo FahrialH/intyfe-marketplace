@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, ShoppingBag, User as UserIcon } from 'lucide-react';
+import { Menu, ShoppingBag, User as UserIcon, Sparkles } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { MobileDrawer } from './MobileDrawer';
@@ -10,7 +10,7 @@ export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { itemCount } = useCart();
-  const { user, profile, isAdmin } = useAuth();
+  const { user, profile, isAdmin, isSeller } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,6 +127,16 @@ export const Header: React.FC = () => {
               <div className="hidden sm:block">
                 <SolanaWalletButton showBadge={true} align="right" />
               </div>
+
+              {isSeller && (
+                <Link
+                  to="/seller/dashboard"
+                  className="hidden lg:flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-full bg-[#d81395]/20 hover:bg-[#d81395]/30 border border-[#d81395]/40 text-[#fff2c6] transition-all shadow-[0_0_12px_rgba(216,19,149,0.2)]"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#f4bb28]" />
+                  <span>Studio</span>
+                </Link>
+              )}
 
               {user ? (
                 <Link

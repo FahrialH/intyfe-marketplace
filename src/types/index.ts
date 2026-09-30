@@ -49,6 +49,10 @@ export interface Product {
     value: string;
   }[];
   tags: string[];
+  sellerId?: string;
+  sellerName?: string;
+  sellerWallet?: string;
+  storeSlug?: string;
 }
 
 export interface Studio {
@@ -65,6 +69,8 @@ export interface Studio {
   totalStories: number;
   totalVolumeSol: number;
   productsCount: number;
+  sellerId?: string;
+  walletAddress?: string;
   socials: {
     twitter?: string;
     discord?: string;

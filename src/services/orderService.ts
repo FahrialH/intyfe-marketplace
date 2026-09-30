@@ -73,13 +73,26 @@ export const createOrderWithItems = async (
         product_id: item.product.id,
         quantity: item.quantity,
         price_sol: item.product.price,
+        seller_id: item.product.sellerId || null,
+        seller_wallet: item.product.sellerWallet || null,
+        payout_tx_signature: solanaTxSignature,
+        payout_status: 'completed',
       }));
 
       const { error: itemsError } = await supabase
         .from('order_items')
         .insert(orderItemsToInsert);
 
-      if (itemsError) {
+      // Fallback if seller columns are not yet applied to order_items in Supabase
+      if (itemsError && itemsError.message.includes('seller')) {
+        const fallbackItems = items.map((item) => ({
+          order_id: createdOrder.id,
+          product_id: item.product.id,
+          quantity: item.quantity,
+          price_sol: item.product.price,
+        }));
+        await supabase.from('order_items').insert(fallbackItems);
+      } else if (itemsError) {
         console.warn('Notice inserting order items:', itemsError.message);
       }
     }

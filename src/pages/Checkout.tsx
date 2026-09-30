@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -11,9 +11,9 @@ import {
   Loader2,
   AlertCircle,
   Coins,
-  RefreshCw,
   Sparkles,
   Layers,
+  Store,
 } from 'lucide-react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
@@ -160,6 +160,44 @@ export const Checkout: React.FC = () => {
   const standardSol = Math.max(0.001, Number(subtotal.toFixed(4)));
   const totalSol = testMode ? 0.0001 : standardSol;
 
+  const defaultTreasuryStr =
+    import.meta.env.VITE_SOLANA_TREASURY_WALLET ||
+    '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM';
+
+  // Calculate direct seller payout amounts and group by destination wallet
+  const sellerPayoutBreakdown = useMemo(() => {
+    const map = new Map<string, { sellerName: string; amountSol: number; itemCount: number }>();
+    cartItems.forEach((item) => {
+      let walletStr = defaultTreasuryStr;
+      if (item.product.sellerWallet) {
+        try {
+          new PublicKey(item.product.sellerWallet);
+          walletStr = item.product.sellerWallet;
+        } catch {
+          walletStr = defaultTreasuryStr;
+        }
+      }
+      const sName =
+        item.product.sellerName ||
+        (walletStr === defaultTreasuryStr ? 'Intyfe Creator Treasury' : 'Creator Studio');
+      const itemCost = testMode
+        ? 0.0001 / Math.max(1, cartItems.length)
+        : item.product.price * item.quantity;
+
+      const current = map.get(walletStr) || { sellerName: sName, amountSol: 0, itemCount: 0 };
+      current.amountSol += itemCost;
+      current.itemCount += item.quantity;
+      map.set(walletStr, current);
+    });
+
+    return Array.from(map.entries()).map(([wallet, data]) => ({
+      wallet,
+      sellerName: data.sellerName,
+      amountSol: Number(data.amountSol.toFixed(4)),
+      itemCount: data.itemCount,
+    }));
+  }, [cartItems, testMode, defaultTreasuryStr]);
+
   // Fetch Devnet wallet balance whenever connected
   useEffect(() => {
     let isMounted = true;
@@ -262,21 +300,32 @@ export const Checkout: React.FC = () => {
     }
 
     try {
-      setStatusMessage('Preparing Solana Devnet transfer...');
-      const treasuryPubkeyStr =
-        import.meta.env.VITE_SOLANA_TREASURY_WALLET ||
-        '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM';
-      const treasuryPubkey = new PublicKey(treasuryPubkeyStr);
+      setStatusMessage('Preparing direct Solana on-chain transfers to creator wallets...');
+      const transaction = new Transaction();
 
-      const lamports = Math.round(totalSol * LAMPORTS_PER_SOL);
+      sellerPayoutBreakdown.forEach(({ wallet: destWallet, amountSol }) => {
+        const destPubkey = new PublicKey(destWallet);
+        const lamports = Math.round(amountSol * LAMPORTS_PER_SOL);
+        if (lamports > 0) {
+          transaction.add(
+            SystemProgram.transfer({
+              fromPubkey: publicKey,
+              toPubkey: destPubkey,
+              lamports,
+            })
+          );
+        }
+      });
 
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: treasuryPubkey,
-          lamports,
-        })
-      );
+      if (transaction.instructions.length === 0) {
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(defaultTreasuryStr),
+            lamports: Math.round(totalSol * LAMPORTS_PER_SOL),
+          })
+        );
+      }
 
       setStatusMessage('Fetching latest Solana Devnet blockhash...');
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
@@ -330,11 +379,6 @@ export const Checkout: React.FC = () => {
     setStatusMessage('Generating real on-chain transaction on Solana Devnet...');
 
     try {
-      const treasuryPubkeyStr =
-        import.meta.env.VITE_SOLANA_TREASURY_WALLET ||
-        '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM';
-      const treasuryPubkey = new PublicKey(treasuryPubkeyStr);
-
       let finalSignature = '';
       let testWalletUsed = publicKey?.toBase58() || '';
 
@@ -359,14 +403,28 @@ export const Checkout: React.FC = () => {
           'confirmed'
         );
 
-        setStatusMessage('Submitting transfer of 1,000 lamports to treasury on Devnet...');
-        const testTx = new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: testPayer.publicKey,
-            toPubkey: treasuryPubkey,
-            lamports: 1000,
-          })
-        );
+        setStatusMessage('Submitting direct creator transfers on Devnet...');
+        const testTx = new Transaction();
+        sellerPayoutBreakdown.forEach(({ wallet: destWallet }) => {
+          testTx.add(
+            SystemProgram.transfer({
+              fromPubkey: testPayer.publicKey,
+              toPubkey: new PublicKey(destWallet),
+              lamports: 1000,
+            })
+          );
+        });
+
+        if (testTx.instructions.length === 0) {
+          testTx.add(
+            SystemProgram.transfer({
+              fromPubkey: testPayer.publicKey,
+              toPubkey: new PublicKey(defaultTreasuryStr),
+              lamports: 1000,
+            })
+          );
+        }
+
         finalSignature = await sendAndConfirmTransaction(connection, testTx, [testPayer]);
       } catch (faucetError) {
         console.warn('Devnet public faucet rate-limited or unavailable:', faucetError);
@@ -446,6 +504,31 @@ export const Checkout: React.FC = () => {
               </a>
             )}
           </div>
+
+          {/* Direct Creator Wallet Payout Receipts */}
+          {sellerPayoutBreakdown.length > 0 && (
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-left max-w-md mx-auto space-y-2">
+              <span className="text-xs font-bold text-white flex items-center gap-1.5 pb-2 border-b border-white/10">
+                <Store className="w-3.5 h-3.5 text-[#f4bb28]" />
+                Direct Creator Wallet Payouts Completed
+              </span>
+              <div className="divide-y divide-white/5 text-xs">
+                {sellerPayoutBreakdown.map((item, idx) => (
+                  <div key={idx} className="py-2 flex items-center justify-between">
+                    <div>
+                      <span className="font-semibold text-white block">{item.sellerName}</span>
+                      <span className="text-[10px] font-mono text-neutral-400">
+                        Recipient: {item.wallet.slice(0, 6)}...{item.wallet.slice(-4)}
+                      </span>
+                    </div>
+                    <span className="font-mono font-bold text-[#f4bb28]">
+                      {item.amountSol} SOL
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10 max-w-md mx-auto text-left flex items-start gap-3">
             <Layers className="w-5 h-5 text-[#f4bb28] shrink-0 mt-0.5" />
@@ -760,6 +843,35 @@ export const Checkout: React.FC = () => {
                   <span>Solana Network Fee</span>
                   <span className="text-emerald-400 font-mono">~0.000005 SOL (Devnet)</span>
                 </div>
+
+                {/* Direct Creator Payout Breakdown */}
+                {sellerPayoutBreakdown.length > 0 && (
+                  <div className="pt-2 pb-1 border-t border-white/5 space-y-1.5">
+                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block flex items-center gap-1">
+                      <Store className="w-3 h-3 text-[#f4bb28]" />
+                      Direct Creator Wallet Payouts (100%)
+                    </span>
+                    {sellerPayoutBreakdown.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between text-[11px] bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/5"
+                      >
+                        <div className="min-w-0 pr-2">
+                          <span className="text-white font-medium block truncate">
+                            {item.sellerName}
+                          </span>
+                          <span className="text-[10px] font-mono text-[#f4bb28] block truncate">
+                            {item.wallet.slice(0, 6)}...{item.wallet.slice(-4)}
+                          </span>
+                        </div>
+                        <span className="font-mono font-bold text-white shrink-0">
+                          {formatSol(item.amountSol)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <div className="flex justify-between pt-3 border-t border-white/10 font-bold text-base text-white">
                   <span>Total Due</span>
                   <div className="text-right">

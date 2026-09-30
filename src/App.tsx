@@ -6,7 +6,7 @@ import { CartProvider } from './context/CartContext';
 import { Layout } from './components/layout/Layout';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
-import { RequireAdmin } from './components/ProtectedRoutes';
+import { RequireAdmin, RequireSeller } from './components/ProtectedRoutes';
 
 import { Home } from './pages/Home';
 import { Shop } from './pages/Shop';
@@ -24,6 +24,10 @@ import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { AdminNews } from './pages/AdminNews';
 import { AdminNewsEditor } from './pages/AdminNewsEditor';
+import { SellerDashboard } from './pages/seller/SellerDashboard';
+import { SellerProfileEditor } from './pages/seller/SellerProfileEditor';
+import { SellerProductList } from './pages/seller/SellerProductList';
+import { SellerProductEditor } from './pages/seller/SellerProductEditor';
 import { NotFound } from './pages/NotFound';
 
 export const App: React.FC = () => {
@@ -74,6 +78,56 @@ export const App: React.FC = () => {
                       <RequireAdmin>
                         <AdminNewsEditor />
                       </RequireAdmin>
+                    }
+                  />
+
+                  {/* Creator / Seller Protected Routes */}
+                  <Route
+                    path="seller"
+                    element={
+                      <RequireSeller>
+                        <SellerDashboard />
+                      </RequireSeller>
+                    }
+                  />
+                  <Route
+                    path="seller/dashboard"
+                    element={
+                      <RequireSeller>
+                        <SellerDashboard />
+                      </RequireSeller>
+                    }
+                  />
+                  <Route
+                    path="seller/profile"
+                    element={
+                      <RequireSeller>
+                        <SellerProfileEditor />
+                      </RequireSeller>
+                    }
+                  />
+                  <Route
+                    path="seller/products"
+                    element={
+                      <RequireSeller>
+                        <SellerProductList />
+                      </RequireSeller>
+                    }
+                  />
+                  <Route
+                    path="seller/products/new"
+                    element={
+                      <RequireSeller>
+                        <SellerProductEditor />
+                      </RequireSeller>
+                    }
+                  />
+                  <Route
+                    path="seller/products/edit/:id"
+                    element={
+                      <RequireSeller>
+                        <SellerProductEditor />
+                      </RequireSeller>
                     }
                   />
 

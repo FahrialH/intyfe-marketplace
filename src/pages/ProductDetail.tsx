@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronRight, ShoppingCart, ShieldCheck, Share2, Layers } from 'lucide-react';
+import { ChevronRight, ShoppingCart, ShieldCheck, Share2, Layers, ExternalLink, Store } from 'lucide-react';
 import { mockProducts } from '../data/mockData';
 import { useCart } from '../context/CartContext';
 import { RatingStars } from '../components/common/RatingStars';
 import { QuantityStepper } from '../components/common/QuantityStepper';
 import { ProductCard } from '../components/features/ProductCard';
+import { getAllPublicProducts } from '../services/sellerService';
+import { Product } from '../types';
 
 export const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { addToCart, showToast } = useCart();
 
-  const product = mockProducts.find((p) => p.slug === slug) || mockProducts[0];
+  const [product, setProduct] = useState<Product>(() => {
+    return mockProducts.find((p) => p.slug === slug) || mockProducts[0];
+  });
   const [selectedImage, setSelectedImage] = useState(product.image);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'attributes' | 'reviews'>('description');
+
+  useEffect(() => {
+    let mounted = true;
+    getAllPublicProducts().then((all) => {
+      const found = all.find((p) => p.slug === slug);
+      if (found && mounted) {
+        setProduct(found);
+        setSelectedImage(found.image);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [slug]);
 
   const relatedProducts = mockProducts.filter((p) => p.id !== product.id).slice(0, 3);
 
@@ -119,6 +137,39 @@ export const ProductDetail: React.FC = () => {
                 Solana Devnet network fees (~0.000005 SOL) included. Collectible pass mints directly to connected wallet upon purchase.
               </p>
             </div>
+
+            {/* Creator / Studio Attribution */}
+            {product.sellerName && (
+              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/5 border border-white/10 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#d81395] to-[#f4bb28] p-0.5 shrink-0">
+                    <div className="w-full h-full rounded-[10px] bg-black flex items-center justify-center font-bold text-xs text-[#f4bb28]">
+                      <Store className="w-4 h-4" />
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-400 uppercase font-semibold tracking-wider block">
+                      Creator / Studio
+                    </span>
+                    <span className="text-xs font-bold text-white block">
+                      {product.sellerName}
+                    </span>
+                  </div>
+                </div>
+
+                {product.storeSlug ? (
+                  <Link
+                    to={`/store/${product.storeSlug}`}
+                    className="flex items-center gap-1 text-xs text-[#f4bb28] hover:underline font-semibold px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                  >
+                    <span>View Store</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
+                ) : (
+                  <span className="text-[11px] text-emerald-400 font-mono">Verified Studio</span>
+                )}
+              </div>
+            )}
 
             <p className="text-sm text-neutral-300 leading-relaxed mb-6">
               {product.description}

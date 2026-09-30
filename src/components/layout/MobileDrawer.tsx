@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { X, ShoppingBag, User, Film, Compass, Store, Newspaper, Shield } from 'lucide-react';
+import { X, ShoppingBag, User, Film, Compass, Store, Newspaper, Shield, Sparkles } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { SolanaWalletButton } from '../features/SolanaWalletButton';
@@ -12,7 +12,7 @@ interface MobileDrawerProps {
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) => {
   const { itemCount } = useCart();
-  const { user, profile, isAdmin, signOut } = useAuth();
+  const { user, profile, isAdmin, isSeller, signOut } = useAuth();
 
   if (!isOpen) return null;
 
@@ -118,6 +118,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
 
         <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
           <SolanaWalletButton isMobile={true} showBadge={true} />
+
+          {isSeller && (
+            <NavLink
+              to="/seller/dashboard"
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-semibold bg-[#f4bb28]/15 border border-[#f4bb28]/40 text-[#f4bb28] hover:bg-[#f4bb28]/25 transition-colors"
+            >
+              <Sparkles className="w-3.5 h-3.5" /> Creator Studio
+            </NavLink>
+          )}
 
           {isAdmin && (
             <NavLink

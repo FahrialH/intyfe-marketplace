@@ -15,15 +15,17 @@ import {
   ShoppingBag,
   Loader2,
   Receipt,
+  Store,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { getUserBoughtItems } from '../services/orderService';
+import { updateSellerProfile } from '../services/sellerService';
 import { UserBoughtItemRecord } from '../lib/supabase';
 
 export const MyAccount: React.FC = () => {
   const { wallet, showToast } = useCart();
-  const { user, profile, isAdmin, isSeller, role, signOut, linkSolanaWallet, signIn, signUp, demoSignIn } = useAuth();
+  const { user, profile, isAdmin, isSeller, role, signOut, linkSolanaWallet, signIn, signUp, demoSignIn, refreshProfile } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
@@ -96,6 +98,18 @@ export const MyAccount: React.FC = () => {
     } else {
       showToast(res.error || 'Failed to link wallet');
     }
+  };
+
+  const handleUpgradeToSeller = async () => {
+    if (!user?.id) return;
+    const { error } = await updateSellerProfile(user.id, { role: 'seller' });
+    if (error) {
+      showToast(error.message);
+      return;
+    }
+    await refreshProfile();
+    showToast('Account upgraded to Creator! Welcome to Creator Studio.');
+    navigate('/seller/profile');
   };
 
   // Dynamic portfolio calculations
@@ -187,6 +201,49 @@ export const MyAccount: React.FC = () => {
                 >
                   Manage News &rarr;
                 </Link>
+              </div>
+            )}
+
+            {/* Creator Studio Banner for Sellers */}
+            {isSeller ? (
+              <div className="mt-6 p-4 rounded-2xl bg-gradient-to-r from-[#f4bb28]/15 via-[#d81395]/15 to-transparent border border-[#f4bb28]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Store className="w-5 h-5 text-[#f4bb28]" />
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                      Creator Studio Active
+                    </h4>
+                    <p className="text-xs text-neutral-300">
+                      Manage your public storefront profile, catalog items, and view real-time Solana wallet payout receipts.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/seller/dashboard"
+                    className="px-4 py-1.5 rounded-full bg-[#f4bb28] hover:bg-[#e3ae24] text-black text-xs font-bold transition-all shrink-0"
+                  >
+                    Open Studio &rarr;
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Store className="w-5 h-5 text-[#d81395]" />
+                  <div>
+                    <h4 className="text-xs font-bold text-white">Sell Your Own Screenplays & Passes</h4>
+                    <p className="text-xs text-neutral-400">
+                      Upgrade to a Creator profile to open your custom store and receive direct Solana wallet payouts.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleUpgradeToSeller}
+                  className="px-4 py-1.5 rounded-full bg-[#d81395] hover:bg-[#9a106a] text-white text-xs font-semibold transition-all shrink-0 cursor-pointer"
+                >
+                  Become a Creator
+                </button>
               </div>
             )}
 

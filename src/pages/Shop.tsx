@@ -1,21 +1,42 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, SlidersHorizontal, ChevronRight } from 'lucide-react';
+import { Search, SlidersHorizontal, ChevronRight, Loader2 } from 'lucide-react';
 import { mockProducts } from '../data/mockData';
 import { ProductCard } from '../components/features/ProductCard';
+import { getAllPublicProducts } from '../services/sellerService';
+import { Product } from '../types';
 
 export const Shop: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [sortBy, setSortBy] = useState<string>('menu_order');
 
-  const categories = useMemo(() => {
-    const cats = new Set(mockProducts.map((p) => p.category));
-    return ['All', ...Array.from(cats)];
+  useEffect(() => {
+    let mounted = true;
+    getAllPublicProducts()
+      .then((data) => {
+        if (mounted && data.length > 0) {
+          setProducts(data);
+        }
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
+  const categories = useMemo(() => {
+    const cats = new Set(products.map((p) => p.category));
+    return ['All', ...Array.from(cats)];
+  }, [products]);
+
   const filteredProducts = useMemo(() => {
-    return mockProducts
+    return products
       .filter((p) => {
         const matchesCat = selectedCategory === 'All' || p.category === selectedCategory;
         const matchesSearch =
@@ -30,7 +51,7 @@ export const Shop: React.FC = () => {
         if (sortBy === 'popularity') return b.reviewsCount - a.reviewsCount;
         return 0;
       });
-  }, [searchTerm, selectedCategory, sortBy]);
+  }, [products, searchTerm, selectedCategory, sortBy]);
 
   return (
     <div className="pt-6 sm:pt-8 pb-20 sm:pb-24 container mx-auto px-4 max-w-[1200px]">
@@ -48,7 +69,7 @@ export const Shop: React.FC = () => {
             Marketplace <span className="bg-gradient-to-r from-[#d81395] to-[#fff2c6] bg-clip-text text-transparent">Catalog</span>
           </h1>
           <p className="text-neutral-400 text-sm mt-1">
-            Showing active film scripts, collectibles, and production passes
+            Showing active film scripts, collectibles, and production passes ({products.length} items)
           </p>
         </div>
 
@@ -89,7 +110,7 @@ export const Shop: React.FC = () => {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
               selectedCategory === cat
                 ? 'bg-[#d81395] text-white shadow-[0_0_15px_rgba(216,19,149,0.3)]'
                 : 'bg-[#151515] text-neutral-400 hover:text-white border border-white/10 hover:border-white/20'
@@ -101,7 +122,12 @@ export const Shop: React.FC = () => {
       </div>
 
       {/* Products Grid */}
-      {filteredProducts.length > 0 ? (
+      {loading ? (
+        <div className="min-h-[40vh] flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 text-[#d81395] animate-spin" />
+          <p className="text-xs text-neutral-400">Loading catalog items...</p>
+        </div>
+      ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -115,7 +141,7 @@ export const Shop: React.FC = () => {
               setSearchTerm('');
               setSelectedCategory('All');
             }}
-            className="mt-4 px-5 py-2 rounded-full bg-[#d81395] text-white text-xs font-semibold"
+            className="mt-4 px-5 py-2 rounded-full bg-[#d81395] text-white text-xs font-semibold cursor-pointer"
           >
             Reset Filters
           </button>

@@ -27,6 +27,19 @@ export interface ProfileRecord {
   avatar_url: string | null;
   role: UserRole;
   solana_wallet_address: string | null;
+  store_slug?: string | null;
+  store_name?: string | null;
+  tagline?: string | null;
+  bio?: string | null;
+  banner_url?: string | null;
+  location?: string | null;
+  founded_year?: number | null;
+  socials?: {
+    twitter?: string;
+    discord?: string;
+    website?: string;
+  } | null;
+  is_verified?: boolean;
   created_at: string;
 }
 
@@ -84,6 +97,10 @@ export interface OrderItemRecord {
   product_id: string;
   quantity: number;
   price_sol: number;
+  seller_id?: string | null;
+  seller_wallet?: string | null;
+  payout_tx_signature?: string | null;
+  payout_status?: 'completed' | 'pending' | 'failed';
 }
 
 export interface UserBoughtItemRecord {
